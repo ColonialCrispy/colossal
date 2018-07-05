@@ -274,6 +274,8 @@ client.on ("message", (message) => {
 
 
     }
+	
+	
 
     if (message.content.startsWith(`c!nocontrast`)) {
         let mUser = message.mentions.users.first()
@@ -1081,7 +1083,7 @@ client.on ("message", (message) => {
     }
 
     if (message.content.startsWith(`c!solarsystem`)) {
-        message.channel.send(`Which Planet would you like to learn about?`)
+        message.channel.send(`What would you like to know about?`)
 
         const filter = m => m.author.equals(message.author);
         message.channel.awaitMessages(filter, { max: 1, time: 6000, errors: [`time`] })
@@ -1157,7 +1159,7 @@ client.on ("message", (message) => {
                 marbed.addField(`Order from the Sun`, `Fourth Planet`)
                 marbed.addField(`Day Length`, `1.06 days`)
                 marbed.addField(`Year Length`, `687 days`)
-                marbed.addField(`Distance`, ` 1.524 Astronomical Unit.`)
+                marbed.addField(`Distance`, ` 1.524 Astronomical Units.`)
                 marbed.addField(`Density`, `${planets.mars.density} kg.`)
                 marbed.addField(`Radius`, `${planets.mars.radius} meters.`)
                 marbed.addField(`Volume`, `${planets.mars.volume} meters^3.`)
@@ -1174,37 +1176,85 @@ client.on ("message", (message) => {
                 marbed.addField(`Order from the Sun`, `Fifth Planet`)
                 marbed.addField(`Day Length`, `9.93 hours`)
                 marbed.addField(`Year Length`, `12 years`)
-                marbed.addField(`Distance`, ` 5.2 Astronomical Unit.`)
+                marbed.addField(`Distance`, ` 5.2 Astronomical Units.`)
                 marbed.addField(`Density`, `${planets.jupiter.density} kg.`)
                 marbed.addField(`Radius`, `${planets.jupiter.radius} meters.`)
                 marbed.addField(`Volume`, `${planets.jupiter.volume} meters^3.`)
                 marbed.addField(`Mass`, `${planets.jupiter.mass} kilograms.`)
-                marbed.addField(`How will it die?`, `No strong aswer is defined. Will either die when the Sun supernovas or will be ejected from the Solar System.`)
+                marbed.addField(`How will it die?`, `No strong aswer is defined. Will either die when the Sun supernovas or will just leave the Solar System.`)
                 message.channel.send(marbed) 
             }
 
-            if(collected.first().content == `Frese Frese`) {
-                message.channel.send(`No wonder your mom put you up for adoption.`) 
+            if(collected.first().content == `Saturn`) {
+                const marbed = new discord.RichEmbed()
+                marbed.setTitle(`Saturn`)
+                marbed.setColor(`#d7ff47`)
+                marbed.setThumbnail(`https://cdn.discordapp.com/attachments/463426578135908352/464102349368066070/download_18.jpeg`)
+                marbed.addField(`Order from the Sun`, `Sixth Planet`)
+                marbed.addField(`Day Length`, `10.7 hours`)
+                marbed.addField(`Year Length`, `29 years`)
+                marbed.addField(`Distance`, ` 9.5 Astronomical Units.`)
+                marbed.addField(`Density`, `${planets.saturn.density} kg.`)
+                marbed.addField(`Radius`, `${planets.saturn.radius} meters.`)
+                marbed.addField(`Volume`, `${planets.saturn.volume} meters^3.`)
+                marbed.addField(`Mass`, `${planets.saturn.mass} kilograms.`)
+                marbed.addField(`How will it die?`, `No strong aswer is defined. Will either die when the Sun supernovas or will be just leave from the Solar System.`)
+                message.channel.send(marbed) 
             }
 
-            if(collected.first().content == `Peruvian`) {
-                message.channel.send(`We already knew that.`)
+            if(collected.first().content == `Uranus`) {
+                const marbed = new discord.RichEmbed()
+                marbed.setTitle(`Uranus`)
+                marbed.setColor(`#8ad1d1`)
+                marbed.setThumbnail(`https://cdn.discordapp.com/attachments/463426578135908352/464102355600932874/Uranus2.jpg`)
+                marbed.addField(`Order from the Sun`, `Seventh Planet`)
+                marbed.addField(`Day Length`, `17.9 hours`)
+                marbed.addField(`Year Length`, `84 years`)
+                marbed.addField(`Distance`, ` 19.4 Astronomical Units.`)
+                marbed.addField(`Density`, `${planets.uranus.density} kg.`)
+                marbed.addField(`Radius`, `${planets.uranus.radius} meters.`)
+                marbed.addField(`Volume`, `${planets.uranus.volume} meters^3.`)
+                marbed.addField(`Mass`, `${planets.uranus.mass} kilograms.`)
+                marbed.addField(`How will it die?`, `Will die when Sun supernovas.`)
+                message.channel.send(marbed) 
             }
 
-            if(collected.first().content == `Cjets`) {
-                message.channel.send(`*You hear moaning sounds*`) 
+            if(collected.first().content == `Neptune`) {
+                const marbed = new discord.RichEmbed()
+                marbed.setTitle(`Uranus`)
+                marbed.setColor(`#1a15af`)
+                marbed.setThumbnail(`https://cdn.discordapp.com/attachments/463426578135908352/464102352069328915/Neptune_Full.jpg`)
+                marbed.addField(`Order from the Sun`, `Eigth Planet`)
+                marbed.addField(`Day Length`, `19.1 hours`)
+                marbed.addField(`Year Length`, `164 years`)
+                marbed.addField(`Distance`, ` 30 Astronomical Units.`)
+                marbed.addField(`Density`, `${planets.neptune.density} kg.`)
+                marbed.addField(`Radius`, `${planets.neptune.radius} meters.`)
+                marbed.addField(`Volume`, `${planets.neptune.volume} meters^3.`)
+                marbed.addField(`Mass`, `${planets.neptune.mass} kilograms.`)
+                marbed.addField(`How will it die?`, `Will die when Sun supernovas.`)
+                message.channel.send(marbed) 
             }
 
-            if(collected.first().content == `Infiland`) {
-                message.channel.send(`$150 a month my dude`) 
+            if(collected.first().content == `Pluto`) {
+                const marbed = new discord.RichEmbed()
+                marbed.setTitle(`Pluto`)
+                marbed.setColor(`#ffeff9`)
+                marbed.setThumbnail(`https://cdn.discordapp.com/attachments/463426578135908352/464102372852105226/20151106_crop_p_color2_enhanced_release-superenhanced-2k-dc-ir-zld.png`)
+                marbed.addField(`Order from the Sun`, `Dward Planet (Demoted)`)
+                marbed.addField(`Day Length`, `6.37 days`)
+                marbed.addField(`Year Length`, `247.7 years`)
+                marbed.addField(`Distance`, ` 39 Astronomical Units.`)
+                marbed.addField(`Density`, `${planets.pluto.density} kg.`)
+                marbed.addField(`Radius`, `${planets.pluto.radius} meters.`)
+                marbed.addField(`Volume`, `${planets.pluto.volume} meters^3.`)
+                marbed.addField(`Mass`, `${planets.pluto.mass} kilograms.`)
+                marbed.addField(`How will it die?`, `No clear answer defined.`)
+                message.channel.send(marbed) 
             }
             
             if(collected.first().content == `idk`) {
-                message.channel.send(`You can do: \n \n Infiland \n Cjets \n Peruvian \n Frese Frese \n Rojo \n Sundal \n Wonder \n Jap \n Cloud`) 
-            }
-
-            if(collected.first().content == `you`) {
-                message.channel.send(`Well no shit. You're smart...`)
+                message.channel.send(`You can do: \n \n Sun \n Mercury \n Venus \n Earth \n Mars \n Jupiter \n Saturn \n Uranus \n Neptune \n Pluto`) 
             }
         })
         
