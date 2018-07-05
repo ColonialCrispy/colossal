@@ -31,6 +31,7 @@ client.on ("ready", () => {
     console.log ("rp bot ready for action"); 
 
     client.user.setActivity (`${client.guilds.size} guilds | c!help` )
+    client.user.setAvatar(`https://cdn.discordapp.com/attachments/463426578135908352/464452110713487370/planet-artist.jpg`)
 
     answered = true;
     cAnswer = "";
