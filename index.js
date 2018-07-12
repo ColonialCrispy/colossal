@@ -477,6 +477,15 @@ client.on ("message", (message) => {
         message.member.addRole(sRole)
         message.channel.send(`You have recieved the role ${sRole}`)
     }
+	
+    if (message.content == `c!addrole Tester`) {
+        const sRole = message.guild.roles.find(`name`, `Tester`);
+        message.member.addRole(sRole)
+        message.channel.send(`You have recieved the role ${sRole}`)
+    } 	
+	 
+     	
+	
 
     if (message.content == `c!addrole Games`) {
         const sRole = message.guild.roles.find(`name`, `Games`);
