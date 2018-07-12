@@ -463,6 +463,38 @@ client.on ("message", (message) => {
             )}
         )})
     }
+	
+    if (message.content == `c!setrole`) {
+        message.content.send(`Please give a role name!`)
+    }
+
+    if (message.content.startsWith(`c!roles`)) {
+        message.channel.send(`The Roles You Can Get Are \n Games - Access to game channels (change a letter, etc) \n Weeb - Access to weeb channels where you can talk about anime and shit \n Contestant - Allows you to participate in contests `)
+    }
+
+    if (message.content == `c!addrole Contestant`) {
+        const sRole = message.guild.roles.find(`name`, `Contestants`);
+        message.member.addRole(sRole)
+        message.channel.send(`You have recieved the role ${sRole}`)
+    }
+
+    if (message.content == `c!addrole Games`) {
+        const sRole = message.guild.roles.find(`name`, `Games`);
+        message.member.addRole(sRole)
+        message.channel.send(`You have recieved the role ${sRole}`)
+    }
+
+    if (message.content == `c!addrole nsfw`) {
+        const sRole = message.guild.roles.find(`name`, `nsfw`);
+        message.member.addRole(sRole)
+        message.channel.send(`You have recieved the role ${sRole}`)
+    }
+
+    if (message.content == `c!addrole Weeb`) {
+        const sRole = message.guild.roles.find(`name`, `Weeb`);
+        message.member.addRole(sRole)
+        message.channel.send(`You have recieved the role ${sRole}`)
+    }
 
     if (message.content.startsWith(`c!weeb`)) {
         let mUser = message.mentions.users.first()
