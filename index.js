@@ -409,6 +409,11 @@ client.on ("message", (message) => {
             })
         })
     }
+	
+    if (message.content.startsWith(`c!hitname info`)) {
+        message.channel.send(`hitname is a game where two people you mention are chosen randomly. Whoever is mentioned has to change their profile picture to whatever the other person wants for 12 hours. (Note: This may only be done if both users agree to play) `)
+    } 	
+	
 
     if (message.content.startsWith(`c!pride`)) {
         let mUser = message.mentions.users.first()
