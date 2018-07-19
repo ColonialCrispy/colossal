@@ -18,6 +18,7 @@ client.on ("ready", () => {
     console.log ("Colonial smells")
     client.user.setActivity ("c!help")
     client.user.setUsername("Colossal")
+    clinet.user.setAvatar(`https://i.imgur.com/SzFq1GX.jpg`)
     
 
     answered = true;
