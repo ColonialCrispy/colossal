@@ -17,8 +17,7 @@ let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 client.on ("ready", () => {
     console.log ("Colonial smells")
     client.user.setActivity ("c!help")
-    client.user.setAvatar("https://cdn.discordapp.com/attachments/459815018230317059/465284390776340500/unknown.png")
-    client.user.setUsername("Mappersphere")
+    client.user.setUsername("Colossal")
     
 
     answered = true;
