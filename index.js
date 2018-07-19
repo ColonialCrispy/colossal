@@ -1,37 +1,25 @@
-const money = require('discord-money');
-const gifSearch = require("gif-search");
-const cheerio = require('cheerio')
-const snekfetch = require('snekfetch')
-const querystring = require('querystring');
-const encode = require('strict-uri-encode');
 const discord = require ('discord.js');
-const weather = require (`weather-js`);
-const randomPuppy = require(`random-puppy`);
-const superagent = require('superagent');
+const fs = require (`fs`);
+const snek = require('snekfetch');
+const Jimp = require(`jimp`);
 const meme = require('memejs');
+const gifSearch = require("gif-search");
+const ms = require (`ms`);
+const planets = require('planet-facts');
+var client = new discord.Client(); 
 const api = "https://api.whatdoestrumpthink.com/api/v1/quotes/random";
-const send = require("quick.hook");
-var client = new discord.Client(); 
-const ytdl = require('ytdl-core');
-const urban = require('relevant-urban');
-const Jimp = require(`jimp`)
-const GoogleImages = require('google-images');
-var search = require('youtube-search');
-const planets = require('planet-facts')
-
-const guildArray = client.guilds.map((guild) => {
-    return `${guild.name} ${guild.memberCount}`;
-})
-
-var client = new discord.Client(); 
-
+let xp = require("./xp.json");
+let orientation = JSON.parse(fs.readFileSync("./orientation.json", "utf8"));
+let gender = JSON.parse(fs.readFileSync("./gender.json", "utf8"));
 const token = process.env.token;
+let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 client.on ("ready", () => {
-    console.log ("rp bot ready for action"); 
-
-    client.user.setActivity (`${client.guilds.size} guilds | c!help` )
-    client.user.setAvatar(`https://cdn.discordapp.com/attachments/463426578135908352/464452110713487370/planet-artist.jpg`)
+    console.log ("Colonial smells")
+    client.user.setActivity ("m!help")
+    client.user.setAvatar("https://cdn.discordapp.com/attachments/459815018230317059/465284390776340500/unknown.png")
+    client.user.setUsername("Mappersphere")
+    
 
     answered = true;
     cAnswer = "";
@@ -42,211 +30,52 @@ client.on ("ready", () => {
     nameAnswer = "";
     userResponse2 = ""; 
     cAnswer = "";
+    
+    
 });
 
-client.on(`guildMemberAdd`, member => {
-    let jChannel = member.guild.channels.find(`name`, `welcome`)
-    let mAvatar = member.user.avatarURL
-    if (!jChannel) return;
-    const gembed = new discord.RichEmbed()
-    gembed.setTitle(`${member.user.username} has joined the server!`)
-    gembed.setColor(`RANDOM`)
-    gembed.setThumbnail(mAvatar)
-    gembed.addField(`Name`, `${member.user.username}`)
-    gembed.addField(`Member count`, member.guild.memberCount)
-    gembed.setFooter(`${member.guild.name}` + `${member.user.displayAvatarURL}`)
-    jChannel.sendEmbed(gembed)
+const prefix = "colonial pls ";
 
-
-
-})
-
-client.on(`guildMemberRemove`, member => {
-    let jChannel = member.guild.channels.find(`name`, `welcome`)
-    let mAvatar = member.user.avatarURL
-    if (!jChannel) return;
-    const gembed = new discord.RichEmbed()
-    gembed.setTitle(`${member.user.username} has left the server!`)
-    gembed.setColor(`RANDOM`)
-    gembed.setThumbnail(mAvatar)
-    gembed.addField(`Name`, `${member.user.username}`)
-    gembed.addField(`Member count`, member.guild.memberCount)
-    gembed.setFooter(`${member.guild.name}` + `${member.user.displayAvatarURL}`)
-    jChannel.sendEmbed(gembed)
-
-
-
-})
-
-const prefix = "c!";
-client.on ("message", (message) => {
+client.on('message', async (message) => {
+    let msg = message.content.toUpperCase(); // This variable takes the message, and turns it all into uppercase so it isn't case sensitive.
+    let sender = message.author; // This variable takes the message, and finds who the author is.
     let cont = message.content.slice(prefix.length).split(" "); // This variable slices off the prefix, then puts the rest in an array based off the spaces
     let args = cont.slice(1);
 
-    if (message.content.startsWith(`c!help`)) {
-        const page = 1; 
-        const filter = m => m.author.equals(message.author);
-        const hembed = new discord.RichEmbed()
-        hembed.setColor(`RANDOM`)
-        hembed.setThumbnail(message.guild.iconURL)
-        hembed.addField(`:grinning: | c!say`, `Says anything you want.`)
-        hembed.addField(`:tophat: | c!luckynumber`, `Gives you a lucky number.`)
-        hembed.addField(`:wink: | c!userinfo`, `Gives you info on yourself.`)
-        hembed.addField(`:iphone: | c!serverinfo`, `Gives you info on the server.`)
-        hembed.setFooter('ColossalBot', message.author.displayAvatarURL)
+    if (message.author.bot) return;
+    
+    if(!xp[message.author.id]) {
+        xp[message.author.id] = {
+            xp: 0,
+            level: 1
+        };
+    }
 
-        const hhembed = new discord.RichEmbed()
-        hhembed.setColor(`RANDOM`)
-        hhembed.setThumbnail(message.guild.iconURL)
-        hhembed.addField(`:frame_photo: | c!searchgif`, `Gives you whatever gif you want. YOU MUST BE IN AN NSFW CHANNEL`)
-        hhembed.addField(`:eggplant: | c!fuckmarrykill`, `Ping someone to play fuck marry kill.`)
-        hhembed.addField(`:thunder_cloud_rain:  | c!weather`, `Weather for any location.`)
-        hhembed.setFooter('ColossalBot', message.author.displayAvatarURL)
-
-
-        const hhhembed = new discord.RichEmbed()
-        hhhembed.setColor(`RANDOM`)
-        hhhembed.setThumbnail(message.guild.iconURL)
-        hhhembed.addField(`:thinking: | c!truthme`, `Ask you a truth question`)
-        hhhembed.addField(`:girl: | c!anime`, `Gives you this weeb kid.`)
-        hhhembed.addField(`:8ball:  | c!8ball`, `An 8ball command.`)
-        hhhembed.setFooter('ColossalBot', message.author.displayAvatarURL)
-
-        message.channel.send(`What page would you like to go to? There are 5 pages.`)
-        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
-        .then(collected => {
-            if (collected.first().content == `1`) {
-                message.channel.send(`Ok!`)
-                message.channel.sendEmbed(hembed)
-            }
-
-
-            if (collected.first().content == `2`) {
-                message.channel.send(`Ok!`)
-                message.channel.sendEmbed(hhembed)
-            }
-
-            if (collected.first().content == `3`) {
-                message.channel.send(`Ok!`)
-                message.channel.sendEmbed(hhhembed)
-            }
+    if (message.content.startsWith(`m!kick`)) {
+        const args7 = cont.slice(1)
+        const args8 = args7.join(" ")
+        const kChannel = message.guild.channels.find(`name`, `logs`)
+        if (!message.member.hasPermission(`KICK_MEMBERS`)) return message.channelhannel.send(`You're not allowed to do that!`)
+        var member = message.mentions.members.first();
+        member.kick().then((member) => {
+            message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: :door: ");
+        }).catch(() => {
+            kChannel.send("Access Denied");
         })
-         .catch(collected => console.log(`Time ran out.`));
+        kChannel.send(`${member}, has been kicked`)
+        const bembed = new discord.RichEmbed()
+        bembed.setTitle(`Kicked user ${member}`)
+        bembed.setThumbnail(`${message.guild.iconURL}`)
+        bembed.addField(`Kicked by`, `${message.author.tag}`)
+        bembed.setFooter(`Mappersphere`, message.author.displayAvatarURL)
+        bembed.addField(`Reason`, `${args8}`)
+        bembed.setTimestamp()
+        kChannel.send(bembed)
     }
-
-    if (message.content.startsWith(`c!teso`)) {
-        message.channel.send(`go away or oof`);
-
-        const filter = m => m.author.equals(message.author);
-
-        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
-        .then(collected => {
-            if (collected.first().content == `go away`) {
-                message.channel.send(`u bi bi >:(`)
-
-            }
-
-            if (collected.first().content == `oof`) {
-                message.channel.send(`hi!`)
-            }
-        })
-         .catch(collected => console.log(`Time ran out.`));
- 
-    }
-
-    if (message.content.startsWith(`c!google`)) {
-        let google = args.slice(1).join('+');
-        let link = `https://www.google.com/search?q=` + google;
-	    message.channel.send(link);
-    }
-
-    if (message.content.startsWith(`c!mercury`)) {
-        message.channel.send(`${planets.mercury.density} kg`)
-    }
-
-    if (message.content.startsWith(`c!scale`)) {
-        let mUser = message.mentions.users.first()
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude) {
-            
-            if (err) throw err;
-            mydude.resize(256, 256)  
-                  .quality(60)
-                  .greyscale()
-                  .write("lena-small-bw.jpg")
-
-            mydude.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'lena-small-bw.jpg'}]})
-            })
-        })
-        
-
-    }
-
-    if (message.content.startsWith(`c!light`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude) {
-            if (err) throw err;
-            mydude.resize(256, 256)  
-                  .quality(60)
-                  .write("brightlmao.jpg")
-                  .brightness(+0.6)
-            mydude.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'brightlmao.jpg'}]})
-            })
-        })
-    }
-
-    if (message.content.startsWith(`c!dark`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude) {
-            if (err) throw err;
-            mydude.resize(256, 256)  
-                  .quality(60)
-                  .write("darklmao.jpg")
-                  .brightness(-0.6)
-            mydude.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'darklmao.jpg'}]})
-            })
-        })
-    }
-
-    if (message.content.startsWith(`c!contrast`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude) {
-            if (err) throw err;
-            mydude.resize(256, 256)  
-                  .quality(60)
-                  .write("contrastlmao.jpg")
-                  .contrast(+0.6)
-            mydude.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'contrastlmao.jpg'}]})
-            })
-        })
-    }
-
-    if (message.content.startsWith(`c!fun`)) {
+    
+    if (message.content.startsWith(`m!fun`)) {
         const fuembed = new discord.RichEmbed
+        const fuuembed = new discord.RichEmbed
         fuembed.setThumbnail(message.guild.iconURL)
         fuembed.setTitle(`List of Fun Commands!`)
         fuembed.addField(`m!8ball`, `A simple 8ball command`)
@@ -270,102 +99,45 @@ client.on ("message", (message) => {
         fuembed.addField(`m!invert`, `Image manipulation`)
         fuembed.addField(`m!thug`, `Image manipulation`)
         fuembed.addField(`m!say`, `Image manipulation`)
+        fuembed.addField(`m!meme`, `Meme Command`)
+        fuembed.addField(`m!fuckmarrykill`, `Fuck Marry Kill`)
+        fuembed.addField(`m!weather`, `Gives you the weather for a given city`)
+        fuembed.addField(`m!truthme`, `Asks you a question`)
+        fuuembed.addField(`m!myfuture`, `Your Future o.o`)
+        fuuembed.addField(`m!avatar`, `Gives the avatar of a mentioned user or yourself`)
+        fuuembed.addField(`m!dice`, `Rolls a dice`)
+        fuuembed.addField(`m!serverinfo`, `Server Info`)
+        fuuembed.addField(`m!trumpquote`, `A quote by the 45th president`)
+        fuuembed.addField(`m!userinfo`, `User info`)
+        fuuembed.addField(`m!gender`, `sets your gender`)
+        fuuembed.addField(`m!whatsmygender`, `whats your gender?`)
+        fuuembed.addField(`m!orientation`, `sets your sexual orientation`)
+        fuuembed.addField(`m!whatsmyorientation`, `whats your sexual orientation?`)
         fuembed.setColor(`RANDOM`)
         message.channel.send(fuembed)
+        message.channel.send(fuuembed)
 
 
     }
-	
-	
-
-    if (message.content.startsWith(`c!nocontrast`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude) {
-            if (err) throw err;
-            mydude.resize(256, 256)  
-                  .quality(60)
-                  .write("nocontrastlmao.jpg")
-                  .contrast(-0.6)
-            mydude.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'nocontrastlmao.jpg'}]})
-            })
-        })
+    
+    if (message.content.startsWith(`m!hitname info`)) {
+        message.channel.send(`hitname is a game where two people you mention are chosen randomly. Whoever is mentioned has to change their profile picture to whatever the other person wants for 12 hours. (Note: This may only be done if both users agree to play) `)
     }
-
-    if (message.content.startsWith(`c!dither`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude3) {
-            if (err) throw err;
-            mydude3.quality(60)  
-                  .write("dither565lmao.jpg")
-                  .dither565()
-            mydude3.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'dither565lmao.jpg'}]})
-            })
-        })
+    
+    if(message.content.startsWith(`m!hitname`)) {
+        let user1 = message.mentions.users.first()
+        let user2 = message.mentions.users.last()
+        number = 2;
+        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
+        if (!user1) return message.channel.send(`Pleae mention two users next time!`)
+        if (!user2) return message.channel.send(`Pleae mention two users next time!`)
+        switch (random) {
+            case 1: message.channel.send(`${user1.toString()} has been hit!`); break;
+            case 2: message.channel.send(`${user2.toString()} has been hit!`); break;
+        }
     }
-
-    if (message.content.startsWith(`c!invert`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        Jimp.read(mUser.avatarURL, function (err, mydude) {
-            if (err) throw err;
-            mydude.resize(256, 256)  
-                  .quality(60)
-                  .write("invertlmao.jpg")
-                  .invert()
-                  .composite( src, x, y );   
-            mydude.getBuffer('image/jpeg', (err, buf) => {
-
-                if (err) return err
-                message.channel.send({files: [{attachment: buf, name: 'invertlmao.jpg'}]})
-            })
-        })
-    }
-
-    if (message.content.startsWith(`c!thug`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://i.imgur.com/EgxsA9V.jpg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.8)
-                      .resize(256, 256)
-                      .write("imagetouse.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 400, 212 )
-                      .write("thug.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
-                }
-            )}
-        )})
-    }
-
-    if (message.content.startsWith(`c!safe`)) {
+    
+    if (message.content.startsWith(`m!safe`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -391,758 +163,40 @@ client.on ("message", (message) => {
             )}
         )})
     }
-
-    if (message.content.startsWith(`c!write`)) {
-        let mUser = message.mentions.users.first()
-
-        const mUserA = mUser.avatarURL
-
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            Jimp.loadFont(Jimp.FONT_SANS_32_BLACK).then(function (err, imagetouse) {
-                if (err) throw err;
-                imagetouse.print(imagetouse, 10, 10, "?")
-                     .write("text.jpg");
-                imagetouse.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send(`Don't worry, you're safe now ;)`, {files: [{attachment: buf, name: 'text.jpg'}]})
-                })
-            })
-        })
-    }
-	
-    if (message.content.startsWith(`c!hitname info`)) {
-        message.channel.send(`hitname is a game where two people you mention are chosen randomly. Whoever is mentioned has to change their profile picture to whatever the other person wants for 12 hours. (Note: This may only be done if both users agree to play) `)
-    } 	
-	
-
-    if (message.content.startsWith(`c!pride`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463672154546765824/4848922942_6a3b774167_z-e1333136836167.jpg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.8)
-                      .resize(147, 147)
-                      .write("gaykid.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 314, 196 )
-                      .write("gaykid.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'gaykid.jpg'}]})
-                }
-            )}
-        )})
-    }
-
-    if (message.content.startsWith(`c!tranny`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463673472846004235/5852d7ef120000c40beef7dd.jpeg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.8)
-                      .resize(185, 185)
-                      .write("trannykid.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 344, 205 )
-                      .write("transkid.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'transkid.jpg'}]})
-                }
-            )}
-        )})
-    }
-	
-    if (message.content == `c!setrole`) {
-        message.content.send(`Please give a role name!`)
-    }
-
-    if (message.content.startsWith(`c!roles`)) {
-        message.channel.send(`The Roles You Can Get Are \n Games - Access to game channels (change a letter, etc) \n Weeb - Access to weeb channels where you can talk about anime and shit \n Contestant - Allows you to participate in contests `)
-    }
-
-    if (message.content == `c!addrole Contestant`) {
-        const sRole = message.guild.roles.find(`name`, `Contestants`);
-        message.member.addRole(sRole)
-        message.channel.send(`You have recieved the role ${sRole}`)
-    }
-	
-    if (message.content == `c!addrole Tester`) {
-        const sRole = message.guild.roles.find(`name`, `Tester`);
-        message.member.addRole(sRole)
-        message.channel.send(`You have recieved the role ${sRole}`)
-    } 	
-	 
-     	
-	
-
-    if (message.content == `c!addrole Games`) {
-        const sRole = message.guild.roles.find(`name`, `Games`);
-        message.member.addRole(sRole)
-        message.channel.send(`You have recieved the role ${sRole}`)
-    }
-
-    if (message.content == `c!addrole nsfw`) {
-        const sRole = message.guild.roles.find(`name`, `nsfw`);
-        message.member.addRole(sRole)
-        message.channel.send(`You have recieved the role ${sRole}`)
-    }
-
-    if (message.content == `c!addrole Weeb`) {
-        const sRole = message.guild.roles.find(`name`, `Weeb`);
-        message.member.addRole(sRole)
-        message.channel.send(`You have recieved the role ${sRole}`)
-    }
-
-    if (message.content.startsWith(`c!weeb`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463674453922938881/18mlqdeeco4jujpg.jpg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.8)
-                      .resize(85, 85)
-                      .write("weeb.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 127, 80 )
-                      .write("weebs.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'weebs.jpg'}]})
-                }
-            )}
-        )})
-    }
-
-    if (message.content.startsWith(`c!minecraft`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463677586992660480/maxresdefault_6.jpg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.8)
-                      .resize(530, 530)
-                      .write("kids.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 508, 0 )
-                      .write("kid.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'kid.jpg'}]})
-                }
-            )}
-        )})
-    }
-
     
-
-    
-
-    
-
-
-    if (message.content.startsWith(`c!trans`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://i.imgur.com/YYgoI3H.png`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.34)
-                      .resize(256, 256)
-                      .write("imagetouse.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .resize(256, 256)
-                      .composite( imagetouse, 0, 0 )
-                      .write("thug.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
-                }
-            )}
-        )})
-    }
-    
-    if (message.content.startsWith(`c!gay`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://i.imgur.com/Wzlskgl.jpg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.34)
-                      .resize(256, 256)
-                      .write("imagetouse.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .resize(256, 256)
-                      .composite( imagetouse, 0, 0 )
-                      .write("thug.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
-                }
-            )}
-        )})
-    }
-
-    if (message.content.startsWith(`c!jew`)) {
-        let mUser = message.mentions.users.first()
-        const args29 = cont.slice(1)
-
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://i.imgur.com/kYoUDCl.png`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .opacity(0.34)
-                      .resize(256, 256)
-                      .write("imagetouse.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .resize(256, 256)
-                      .composite( imagetouse, 0, 0 )
-                      .write("thug.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
-                }
-            )}
-        )})
-    }
-	
-    if(message.content.startsWith(`c!hitname`)) {
-        let user1 = message.mentions.users.first()
-        let user2 = message.mentions.users.last()
-        number = 2;
-        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
-        if (!user1) return message.channel.send(`Pleae mention two users next time!`)
-        if (!user2) return message.channel.send(`Pleae mention two users next time!`)
-        switch (random) {
-            case 1: message.channel.send(`${user1.toString()} has been hit!`); break;
-            case 2: message.channel.send(`${user2.toString()} has been hit!`); break;
+    if (message.content.startsWith(`m!orientation`)) {
+        const margs = message.content.slice(14)
+        if(!margs) return message.channel.send(`Please put your orientation next time!`)
+        console.log(margs)
+        if(!orientation[message.author.id]) {
+            orientation[message.author.id] = {
+                orientation: margs
+            }
         }
-    }	
-
-    
-
-    
-
-
-
-    if (message.content.startsWith(`c!magicword`)) {
-        message.guild.members.forEach(g => {
-            g.setNickname('Sundals Bitch')
+        fs.writeFile("./orientation.json", JSON.stringify(orientation), (err) => {
+            if(err) console.log(err).then(       
+            )
         })
-    }
-
-    if (message.content.startsWith(`c!say`)) {
-        if(message.author.bot) return;
-         const sayMessage = args.join(" ");
-         message.channel.send(sayMessage)
-    }
-
-    if (message.content.startsWith (`c!luckynumber`)) {
-        var LuckNumber = Math.floor((Math.random() * 12000) + 0.120);
-        const numEmb = new discord.RichEmbed()
-        numEmb.setColor("RANDOM")
-        numEmb.setAuthor('LUCKY NUMBER', 'https://vignette.wikia.nocookie.net/nintendo/images/0/02/Question_Block_NSMB.png/revision/latest?cb=20151206055532&path-prefix=en')
-        numEmb.addField('And your lucky number is...', `${LuckNumber}!`);
-
-        message.channel.sendEmbed(numEmb)
-    }
-
-    if (message.content.startsWith("c!userinfo")) {
-        const embed2 = new discord.RichEmbed()
-        embed2.setDescription(`This user's info`)
-        embed2.setAuthor(message.author.username)
-        embed2.setColor(`003fff`)
-        embed2.addField(`Full Username`, `${message.author.username}#${message.author.discriminator}`)
-        embed2.addField(`ID`, message.author.id)
-        embed2.addField(`Created At`, message.author.createdAt)
-        embed2.setThumbnail(message.author.avatarURL)
-        message.channel.sendEmbed(embed2)
-    }
-
-    if (message.content.startsWith(`c!google`)) {
-        let question = encode(args.join(' '));
-        let link = `https://www.lmgtfy.com/?q=${question}`;
-
-
-        message.channel.send(link)
-
-        const qembed = new discord.RichEmbed()
-        qembed.setImage(`https://www.lmgtfy.com/?q=${question}`)
-        qembed.setColor(`RANDOM`)
-
-        message.channel.sendEmbed(qembed)
-
+        if (margs == `gay`) return message.channel.send(`Not okay.`)
+        if (margs == `Gay`) return message.channel.send(`Not okay.`)
+        if (margs == `Bi`) return message.channel.send(`Not okay, who are you, Jap!?`)
+        if (margs == `bi`) return message.channel.send(`Not okay, who are you, Jap!?`)
+        if (margs == `Bisexual`) return message.channel.send(`Not okay, who are you, Jap!?`)
+        if (margs == `bisexual`) return message.channel.send(`Not okay, who are you, Jap!?`)
+        message.channel.send(`Orientation has been set!`)
     }
     
-
-    if (message.content.startsWith(`c!kick`)) {
-        const args7 = cont.slice(1)
-        const args8 = args7.join(" ")
-        const kChannel = message.guild.channels.find(`name`, `logs`)
-        if (!message.member.hasPermission(`KICK_MEMBERS`)) return message.channelhannel.send(`You're not allowed to do that!`)
-        var member = message.mentions.members.first();
-        member.kick().then((member) => {
-            message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: :door: ");
-        }).catch(() => {
-            kChannel.send("Access Denied");
-        })
-        kChannel.send(`${member}, has been kicked`)
-        const bembed = new discord.RichEmbed()
-        bembed.setTitle(`Kicked user ${member}`)
-        bembed.setThumbnail(`${message.guild.iconURL}`)
-        bembed.addField(`Kicked by`, `${message.author.tag}`)
-        bembed.setFooter(`Mappersphere`, message.author.displayAvatarURL)
-        bembed.addField(`Reason`, `${args8}`)
-        bembed.setTimestamp()
-        kChannel.send(bembed)
+    if (message.content.startsWith(`m!whatsmygender`)) {
+        if(!gender[message.author.id]) return message.channel.send(`Please set your gender! (m!gender [gender here])`)
+        message.channel.send(gender[message.author.id].gender)
     }
-
-    if (message.content.startsWith(`c!modlist`)) {
-        message.channel.send(`Colonial \n West \n Korean \n Sundal`)
-    }
-
-    if (message.content.startsWith(`c!commie`)) {
-        let mUser = message.mentions.users.first()
-        let mUser2 = message.mentions.users.last()
-        const args29 = cont.slice(1)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/358448632812535820/463432544831012864/image.png`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .resize(176, 176)
-                      .write("imagetouse.jpg");
-            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
-            if (err) throw err;
-            imagetouse2.quality(60)
-                      .resize(191, 169)
-                      .write("imagetouse2.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 473, 0 )
-                      .composite( imagetouse2, 84, 23)
-                      .write("commie.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'commie.jpg'}]})
-                }
-            )})}
-        )})
-    }
-
-    if (message.content.startsWith(`c!kiss`)) {
-        let mUser = message.mentions.users.first()
-        let mUser2 = message.mentions.users.last()
-        const args29 = cont.slice(1)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463680991266078721/5aad662e87f5e18e_thumb_temp_facebook_post_image_file23875021420057644.png`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .resize(275, 275)
-                      .write("imagetouse.jpg");
-            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
-            if (err) throw err;
-            imagetouse2.quality(60)
-                      .resize(233, 233)
-                      .write("imagetouse2.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 260, 24 )
-                      .composite( imagetouse2, 545, 87)
-                      .write("commie.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'commie.jpg'}]})
-                }
-            )})}
-        )})
-    }
-
-
-
-    if (message.content.startsWith(`c!bully`)) {
-        let mUser = message.mentions.users.first()
-        let mUser2 = message.mentions.users.last()
-        const args29 = cont.slice(1)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://media.discordapp.net/attachments/463426578135908352/463496757922234388/Being_Bullied.jpg?width=1725&height=1170`;
-        Jimp.read(message.author.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .resize(357, 357)
-                      .write("bullier.jpg");
-            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
-            if (err) throw err;
-            imagetouse2.quality(60)
-                      .resize(594, 594)
-                      .write("kidbeingbullied.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 0, 178 )
-                      .composite( imagetouse2, 1027, 38)
-                      .write("bully.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'bully.jpg'}]})
-                }
-            )})}
-        )})
-    }
-
-    if (message.content.startsWith(`c!shove`)) {
-        let mUser = message.mentions.users.first()
-        let mUser2 = message.mentions.users.last()
-        const args29 = cont.slice(1)
-        if(!mUser) return message.channel.send(`Please specifify a user!`)
-        const mUserA = mUser.avatarURL
-        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463503583539625984/shutterstock_127994624.jpg`;
-        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
-            if (err) throw err;
-            imagetouse.quality(60)
-                      .resize(655, 655)
-                      .write("shove1.jpg");
-            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
-                if (err) throw err;
-                imagetouse2.quality(60)
-                           .resize(792, 792)
-                           .write("shove2.jpg");
-            Jimp.read(imagetobase, function (err, mydude) {
-                if (err) throw err;
-                mydude.quality(60)
-                      .composite( imagetouse, 89, 220 )
-                      .composite( imagetouse2, 1273, 256)
-                      .write("shoved.jpg");
-                mydude.getBuffer('image/jpeg', (err, buf) => {
-                    if (err) return err
-                    message.channel.send({files: [{attachment: buf, name: 'shoved.jpg'}]})
-                }
-            )})}
-        )})
-    }
-
-    if (message.content.startsWith(`c!ban`)) {
-        const kChannel = message.guild.channels.find(`name`, `logs`)
-        const args5 = cont.slice(1)
-        const args6 = args5.join(" ")
-        if (!message.member.hasPermission(`BAN_MEMBERS`)) return message.channel.send(`You're not allowed to do that!`)
-        var member = message.mentions.members.first();
-        member.ban().then((member) => {
-            message.channel.send(":wave: " + member.displayName + " has been successfully banned :point_right: :door: ");
-        }).catch(() => {
-            message.channel.send("Access Denied");
-        })
-        kChannel.send(`${member}, has been banned`)
-        const kembed = new discord.RichEmbed()
-        kembed.addField(`Reason`, `${args6}`)
-        kembed.setTitle(`Banned user: ${member}`)
-        kembed.addField(`Ban length`, `Forever`)
-        kembed.setThumbnail(`${message.guild.iconURL}`)
-        kembed.addField(`Banned by`, `${message.author.tag}`)
-        kembed.setFooter(`Mappersphere`, message.author.displayAvatarURL)
-        kembed.setTimestamp()
-        message.channel.send(kembed)
-    }
-
     
-    if (message.content.startsWith(`c!role`)){
-        const sayMessage = args.join(" ");
-        message.guild.createRole({
-            name: `${sayMessage}`,
-            color: 'RANDOM'
-        })
-        let lRole = message.guild.roles.find(`${sayMessage}`, `role`);
-        lRole.setPermission(`KICK_MEMBERS`)
-        message.channel.send(`Created the role ${sayMessage} it's color is random`)
-            .then(role => console.log(`Created new role with name ${sayMessage} and color ${sayMessage}`))
-            .catch(console.error)
-
-
+    if (message.content.startsWith(`m!whatsmyorientation`)) {
+        if(!orientation[message.author.id]) return message.channel.send(`Please set your orientation! (m!orientation [orientation here])`)
+        message.channel.send(orientation[message.author.id].orientation)
     }
-
-    if (message.content.startsWith(`c!rolecreator`)) {
-        message.channel.send(`What is the name of the role?`) 
-        const args19 = cont.slice(2)
-        const args20 = args19.join(" ")
-        const args21 = args19.join(" ")
-        const filter5 = m => m.author.equals(message.author);
-        message.channel.awaitMessages(filter5, { max: 1, time: 6000, errors: ['time'] })
-        .then(collected => {
-            if (collected.first().content == args20) {
-
-                message.channel.send(`What color do you want to be the role. \n \n Google RGB color picker choose your color and copy ONLY the number.`)
-                const filter6 = m => m.author.equals(message.author);
-                message.channel.awaitMessages(filter6, { max: 1, time: 6000, errors: ['time'] })
-                .then(collected => {
-                    if (collected.first().content == args21) {
-                        message.channel.send()
-                        
-                    }
-                })
-
-            }
-
-        })
-
-        message.guild.createRole({
-            name: `${args20}`,
-            color: `${args21}`
-        })
-
-
-
-        
-        
-            
-        
-    }
-
-    const filter = m => m.author.equals(message.author);
-
-        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
-        .then(collected => {
-            if (collected.first().content == `go away`) {
-                message.channel.send(`u bi bi >:(`)
-
-            }
-
-            if (collected.first().content == `oof`) {
-                message.channel.send(`hi!`)
-            }
-        })
-         .catch(collected => console.log(`Time ran out.`));
- 
     
-
-    if (message.content.startsWith(`c!newrole`)){
-        const sayMessage = args.join(" ");
-        if(!message.member.hasPermission(`MANAGE_ROLES`)) return message.channel.send(`You can't do that! :thinking:`);
-        message.guild.createRole({
-            name: `${sayMessage}`,
-            color: 'RANDOM',
-        })
-        const cembed = new discord.RichEmbed()
-        cembed.setThumbnail(message.guild.iconURL)
-        cembed.setColor(`RANDOM`)
-        cembed.setTitle(`The role ${sayMessage} has been created!`)
-        cembed.addField(`Name:`, ` ${sayMessage}`)
-        cembed.addField(`Created by:`, `${message.author.tag}`)
-        cembed.addField(`Color: `, `RANDOM`)
-        cembed.setTimestamp()
-        cembed.setFooter(`Create by ${message.author.tag}`, message.author.avatarURL)
-        message.channel.send(cembed)
-        message.channel.send(`Created the role ${sayMessage} it's color is random`)
-            .then(role => console.log(`Created new role with name ${sayMessage} and color ${sayMessage}`))
-            .catch(console.error)
-    }
-
-    if (message.content.startsWith(`c!editrole`)) {
-        if(!message.member.hasPermission(`MANAGE_ROLES`)) return message.channel.send(`You can't do that! :thinking:`);
-        const sayMessage = args.join(" ");
-        let eRole = message.guild.roles.find(`name`, sayMessage);
-        if (!eRole) return message.channel.send(`Cannot find the role ${sayMessage}`);
-        eRole.setPermissions([`KICK_MEMBERS`, `MANAGE_ROLES`])
-
-        const args2 = cont.slice(2);
-        const pMessage = args2.join(" ");
-
-        const invitePerm = `CREATE_INSTANT_INVITE`;
-        const kickPerm = `KICK_MEMBERS`;
-        const banPerm = `BAN_MEMBERS`;
-        const administratorPerm = `ADMINISTRATOR`;
-        const managechannelPerm = `MANAGE_CHANNELS`;
-        const manageguildPerm = `MANAGE_GUILD`;
-        const addReactionsPerm = `ADD_REACTIONS`;
-        const auditPerm = `VIEW_AUDIT_LOG`;
-        const viewchannelPerm = `VIEW_CHANNEL`;
-        const sendMessagePerm = `SEND_MESSAGES`;
-        const ttsPerm = `SEND_TTS_MESSAGES`;
-        const manageMessagesPerm = `MANAGE_MESSAGES`;
-        const embedPerm = `EMBED_LINKS`;
-        const attachfilesPerm = `ATTACH_FILES`;
-        const historyPerm = `READ_MESSAGE_HISTORY`;
-
-
-        if (pMessage = invitePerm) {
-
-        }
-    }
-
-    if (message.content.startsWith(`c!balance`)) {
-        money.fetchBal(message.author.id).then((i) => {
-            message.channel.send(`**Balance:** ${i.money}`);
-        })
-    }
-
-    if (message.content.startsWith(`c!give`)) {
-        let mUser = message.mentions.users.first();
-        let args3 = cont.slice(2);
-        money.updateBal(mUser.id, args3 /* Value */).then((i) => {
-            message.channel.send(`**${mUser.username} got $${args3} from ${message.author.username}**\n**New Balance:** ${i.money}`); 
-        })
-    }
-
-    if (message.content.startsWith(`c!pay`)) {
-        let mUser = message.mentions.users.first();
-        let args3 = cont.slice(2);
-        money.updateBal(mUser.id, args3 /* Value */).then((i) => {
-            message.channel.send(`Money recieved!`)
-        })
-
-        money.updateBal(message.author.id, -args3 /* Value */).then((i) => {
-            message.channel.send(`Your new balance is ${i.money}!`)
-        })
-    }
-
-    if (message.content.startsWith(`c!fine`)) {
-        if(!message.member.hasPermission("ADMINISTRATOR")) return message.channel.send(`u aint high enough. cum back later`)
-        let mUser = message.mentions.users.first();
-        let args4 = cont.slice(2);
-        money.updateBal(mUser.id, -args3 /* value */).then((i) => {
-            message.channel.send(`**${mUser.username} was fined ${args3} by ${message.author.username}**\n**New Balance:** ${i.money}`);
-
-        })
-    }
-
-    if (message.content.startsWith(`c!teso`)) {
-        message.channel.send(`go away or oof`);
-
-        const filter = m => m.author.equals(message.author);
-
-        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
-        .then(collected => {
-            if (collected.first().content == `go away`) {
-                message.channel.send(`u bi bi >:(`);
-                const bilter = m => m.author.equals(message.author);
-                message.channel.awaitMessages(bilter, { max: 1, time: 60000, errors: [`time`] })
-                .then(collected => {
-                    if (collected.first().content == `oof`) {
-                        message.channel.send(`oof`)
-                    }
-                })
-
-
-            }
-
-            if (collected.first().content == `oof`) {
-                message.channel.send(`hi!`)
-            }
-        })
-         .catch(collected => console.log(`Time ran out.`));
- 
-    }
-
-    if (message.content.startsWith(`c!gay`)) {
-        message.channel.send(`Who is gay?`)
-
-        const filter = m => m.author.equals(message.author);
-        message.channel.awaitMessages(filter, { max: 1, time: 6000, errors: [`time`] })
-        .then(collected => {
-            if (collected.first().content == `go away`) {
-                message.channel.send(`I'm sorry for wasting your time :(`)
-            }
-
-            if(collected.first().content == `Cloud`) {
-                message.channel.send(`DONT CALL MY DAUGHTER GAY!?!?!?!?!!?`) 
-            }
-            
-            if(collected.first().content == `Jap`) {
-                message.channel.send(`Um, he's bisexual. Get it right.`) 
-            }
-
-            if(collected.first().content == `Wonder`) {
-                message.channel.send(`15% gay for Cheeze since 1918`) 
-            }
-
-            if(collected.first().content == `Sundal`) {
-                message.channel.send(`SUNDAL IS GAY!!!!!!!!`) 
-            }
-
-            if(collected.first().content == `Rojo`) {
-                message.channel.send(`Hella gay.`)
-            }
-
-            if(collected.first().content == `Frese Frese`) {
-                message.channel.send(`No wonder your mom put you up for adoption.`) 
-            }
-
-            if(collected.first().content == `Peruvian`) {
-                message.channel.send(`We already knew that.`)
-            }
-
-            if(collected.first().content == `Cjets`) {
-                message.channel.send(`*You hear moaning sounds*`) 
-            }
-
-            if(collected.first().content == `Infiland`) {
-                message.channel.send(`$150 a month my dude`) 
-            }
-            
-            if(collected.first().content == `idk`) {
-                message.channel.send(`You can do: \n \n Infiland \n Cjets \n Peruvian \n Frese Frese \n Rojo \n Sundal \n Wonder \n Jap \n Cloud`) 
-            }
-
-            if(collected.first().content == `you`) {
-                message.channel.send(`Well no shit. You're smart...`)
-            }
-        })
-        
-    }
-
-    if (message.content.startsWith(`c!solarsystem`)) {
+    if (message.content.startsWith(`m!solarsystem`)) {
         message.channel.send(`What would you like to know about?`)
 
         const filter = m => m.author.equals(message.author);
@@ -1319,44 +373,131 @@ client.on ("message", (message) => {
         })
         
     }
+    
+    if (message.content.startsWith(`m!kiss`)) {
+        let mUser = message.mentions.users.first()
+        let mUser2 = message.mentions.users.last()
+        const args29 = cont.slice(1)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463680991266078721/5aad662e87f5e18e_thumb_temp_facebook_post_image_file23875021420057644.png`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .resize(275, 275)
+                      .write("imagetouse.jpg");
+            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
+            if (err) throw err;
+            imagetouse2.quality(60)
+                      .resize(233, 233)
+                      .write("imagetouse2.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 260, 24 )
+                      .composite( imagetouse2, 545, 87)
+                      .write("commie.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'commie.jpg'}]})
+                }
+            )})}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!weeb`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
 
-    if (message.content.startsWith(`c!searchgif`)) {
-
-        let args19 = cont.slice(1);
-        let args17 = (args19.join(' '));
-        if (!message.channel.nsfw) return message.channel.send(" You must be in a N.S.F.W channel to use this command.");
-
-        if (!args[0]) return message.channel.send("Please put a gif name!");
-
-        gifSearch.query(args17).then(
-            gifUrl => {
-                var gembed = new discord.RichEmbed()
-                gembed.setColor(`RANDOM`)
-                gembed.setImage(gifUrl)
-                message.channel.sendEmbed(gembed)
-            }
-        )
-
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463674453922938881/18mlqdeeco4jujpg.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.8)
+                      .resize(85, 85)
+                      .write("weeb.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 127, 80 )
+                      .write("weebs.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'weebs.jpg'}]})
+                }
+            )}
+        )})
     }
 
-    mc1 = "./mc/cep.png", mc2 = "./mc/hue.png", mc3 = "./mc/iri.png", mc4 = "./mc/pc.png", mc5 = "./mc/pc2.png", mc6 = "./mc/saph.png", mc7 = "./mc/white.png", mc8 = "./mc/wondy.png";
-    if (message.content.startsWith ("c!minecraft")) {
-        number = 8;
-        var random = Math.floor (Math.random() * (number - 1 + 1));
-        switch (random) {
-            case 1: message.channel.send ({ files: [mc1]}); break;
-            case 2: message.channel.send ({ files: [mc2]}); break;
-            case 3: message.channel.send ({ files: [mc3]}); break;
-            case 4: message.channel.send ({ files: [mc4]}); break;
-            case 5: message.channel.send ({ files: [mc5]}); break;
-            case 6: message.channel.send ({ files: [mc6]}); break;
-            case 7: message.channel.send ({ files: [mc7]}); break;
-            case 8: message.channel.send ({ files: [mc8]}); break;
+    
+    if (message.content.startsWith(`m!pride`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
 
-        }
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463672154546765824/4848922942_6a3b774167_z-e1333136836167.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.8)
+                      .resize(147, 147)
+                      .write("gaykid.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 314, 196 )
+                      .write("gaykid.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'gaykid.jpg'}]})
+                }
+            )}
+        )})
     }
+    
+    if (message.content.startsWith(`m!minecraft`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
 
-    if (message.content.startsWith(`c!fuckmarrykill`)) {
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463677586992660480/maxresdefault_6.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.8)
+                      .resize(530, 530)
+                      .write("kids.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 508, 0 )
+                      .write("kid.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'kid.jpg'}]})
+                }
+            )}
+        )})
+    }
+    
+    
+    if (message.content.startsWith(`m!meme`)) {
+        meme(function(data) {
+            const embed = new discord.RichEmbed()
+            .setTitle(data.title[0])
+            .setColor("RANDOM")
+            .setImage(data.url[0])
+            message.channel.send(embed);
+        })
+    }
+    if (message.content.startsWith(`m!fuckmarrykill`)) {
 
         var membed = new discord.RichEmbed()
         var kembed = new discord.RichEmbed()
@@ -1389,19 +530,21 @@ client.on ("message", (message) => {
             case 3: message.channel.sendEmbed(fembed); break;
         }
     }
-
-    if (message.content.startsWith(`c!embed`)) {
-        const embed = new discord.RichEmbed()
-        embed.setTitle(`Title here`)
-        embed.setColor(`RANDOM`)
-        embed.setThumbnail(`https://cdn.discordapp.com/attachments/463426578135908352/463707504195665931/Screen_Shot_2018-07-03_at_9.07.53_AM.png`)
-        embed.setDescription(`Description here`)
-        embed.addField(`Title of Field`, `information`)
-        embed.setFooter(`Footer goes`)
+    
+    if (message.content.startsWith(`m!achievement`)) {
+        const aLink = `https://www.minecraftskinstealer.com/achievement/a.php?i=16&h=Achievement+get%21&t=`;
+        const margs = message.content.split(" ").slice(1);
+        if(margs.length > 22) return message.channel.send(`Please make it 22 characters or lower!`)
+        const mmargs = margs.join("+");
+        const mmmargs = (`https://www.minecraftskinstealer.com/achievement/a.php?i=16&h=Achievement+get%21&t=` + mmargs.toUpperCase())
+        let embed = new discord.RichEmbed()
+        embed.setAuthor (`Congratulations!`)
+        embed.setImage(mmmargs)
         message.channel.send(embed)
+
     }
 
-    if (message.content.startsWith (`c!weather`)) {
+    if (message.content.startsWith (`m!weather`)) {
 
         weather.find({search: args.join(" "), degreeType: `F`}, function(err,result) {
             if (err) message.channel.send(err);
@@ -1431,7 +574,9 @@ client.on ("message", (message) => {
         })
     }
 
-    if (message.content.startsWith(`c!truthme`)) {
+
+
+    if (message.content.startsWith(`m!truthme`)) {
         number = 50;
         var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
         switch (random) {
@@ -1487,110 +632,8 @@ client.on ("message", (message) => {
             case 50: message.channel.send("What would you do if your kid was trans?"); break;
         }
     }
-
-    if (message.content.startsWith ("c!gas")) {
-        message.channel.send ("We must gas these weebs!", {files: ["./images/Japan.jpg"]});
-    }
-
-   
-    if (message.content.startsWith ("c!anime")) {
-        message.channel.send ("huh", {files: ["./images/animesucks.jpg"]});
-
-    }
-
-    if (message.content.startsWith ("c!8ball")) {
-        ballMessage = message.content.slice (8); // n ! 8 b a l l [your message]
-        number = 20;
-        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
-        switch (random) {
-            case 1: message.channel.send ("It is certain."); break;
-            case 2: message.channel.send ("As I see it, yes."); break;
-            case 3: message.channel.send ("Reply hazy, please try again."); break;
-            case 4: message.channel.send ("Don't count on it."); break;
-            case 5: message.channel.send ("It is decidedly so."); break;
-            case 6: message.channel.send ("Yes, definitely."); break;
-            case 7: message.channel.send ("Without a doubt."); break;
-            case 8: message.channel.send ("Most likely."); break;
-            case 9: message.channel.send ("Outlook is good."); break;
-            case 10: message.channel.send ("Ask again later. (Watch Korean Rage)"); break;
-            case 11: message.channel.send ("Better not tell you."); break;
-            case 12: message.channel.send ("My reply is no."); break;
-            case 13: message.channel.send ("My sources say no.."); break;
-            case 14: message.channel.send ("You may rely on it."); break;
-            case 15: message.channel.send ("Signs point to yes."); break;
-            case 16: message.channel.send ("Concetrate and ask again."); break;
-            case 17: message.channel.send ("Very doubtful."); break;
-            case 18: message.channel.send ("Yes."); break;
-            case 19: message.channel.send ("Cannot predict now."); break;
-            case 20: message.channel.send ("Outlook is not so good."); break;
-        }
-    }
-
-    if (message.content.startsWith(`c!kick`)) {
-        if(!message.me)
-        var member = message.mentions.members.first();
-        member.kick().then((member) => {
-            message.channel.send(":wave: " + member.displayName + " has been successfully kicked :point_right: ");
-        }).catch(() => {
-            message.channel.send("Access Denied");
-        })
-    }
-
-    if (message.content.startsWith("c!serverinfo")) {
-        const embed = new discord.RichEmbed()
-        embed.addField(`Members`, message.guild.memberCount, true)
-        embed.addField(`Name`, message.guild.name, true)
-        embed.addField(`Region`, message.guild.region, true)
-        embed.addField(`Owner`, message.guild.owner.tag, true)
-        embed.addField(`ID`, message.guild.id, true)
-        embed.setColor(`003fff`)
-        embed.setThumbnail(message.guild.iconURL)
-        message.channel.sendEmbed(embed)
-    }
-
-
-
-    furry1 = "./image2/furry1.jpg"; furry2 = "./image2/furry2.png"; furry3 = "./image2/furry3.jpg"; furry4 = "./image2/furry4.jpg"; furry5 = "./image2/furry5.jpg"; furry6 = "./image2/furry6.jpeg"; furry7 = "./image2/furry7.jpg"; furry8 = "./image2/furry8.jpg"; furry9 = "./image2/furry9.jpg";
-    if (message.content.startsWith ("c!furry")) {
-        number = 9;
-        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
-        switch (random) {
-            case 1: message.channel.send ({ files: [furry1] }); break;
-            case 2: message.channel.send ({ files: [furry2] }); break;
-            case 3: message.channel.send ({ files: [furry3] }); break;
-            case 4: message.channel.send ({ files: [furry4] }); break;
-            case 5: message.channel.send ({ files: [furry5] }); break;
-            case 6: message.channel.send ({ files: [furry6] }); break;
-            case 7: message.channel.send ({ files: [furry7] }); break;
-            case 8: message.channel.send ({ files: [furry8] }); break;
-            case 9: message.channel.send ({ files: [furry9] }); break;
-        }
-    }
-
-    if (message.content.startsWith ("c!dice")) {
-        number = 7;
-        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
-        switch (random) {
-            case 1: message.channel.send (":game_die: You rolled a 1! :game_die:"); break;
-            case 2: message.channel.send (":game_die: You rolled a 2! :game_die:"); break;
-            case 3: message.channel.send (":game_die: You rolled a 3! :game_die:"); break;
-            case 4: message.channel.send (":game_die: You rolled a 4! :game_die:"); break;
-            case 5: message.channel.send (":game_die: You rolled a 5! :game_die:"); break;
-            case 6: message.channel.send (":game_die: You rolled a 6! :game_die:"); break;
-            case 7: message.channel.send (":game_die: You lost your dice :( :game_die:"); break;
-        }
-    }
-
-    if (message.content.startsWith (`c!avatar`)) {
-        message.channel.send(message.author.avatarURL);
-    }
-
-    if (message.content.startsWith(`for sundle`)) {
-        message.channel.send(`why?`)
-    }
-
-
-    if (message.content.startsWith ("c!myfuture")) {
+    
+    if (message.content.startsWith ("m!myfuture")) {
         number = 32;
         var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
         switch (random) {
@@ -1621,28 +664,667 @@ client.on ("message", (message) => {
         }
     }
     
-    if (message.content.startsWith(`c!setnickname`)) {
-        if(!message.member.hasPermission(`MANAGE_NICKNAMES`)) return message.channel.send(`You can't do that! :thinking:`);
-        let nUser = message.mentions.members.first();
-        let args18 = cont.slice(2);
-        let args6 = (args18.join(' '));
-
-        nUser.setNickname(args6)
+    if (message.content.startsWith ("m!dice")) {
+        number = 7;
+        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
+        switch (random) {
+            case 1: message.channel.send (":game_die: You rolled a 1! :game_die:"); break;
+            case 2: message.channel.send (":game_die: You rolled a 2! :game_die:"); break;
+            case 3: message.channel.send (":game_die: You rolled a 3! :game_die:"); break;
+            case 4: message.channel.send (":game_die: You rolled a 4! :game_die:"); break;
+            case 5: message.channel.send (":game_die: You rolled a 5! :game_die:"); break;
+            case 6: message.channel.send (":game_die: You rolled a 6! :game_die:"); break;
+            case 7: message.channel.send (":game_die: You lost your dice :( :game_die:"); break;
+        }
     }
+    
+    if (message.content.startsWith("m!serverinfo")) {
+        const embed = new discord.RichEmbed()
+        embed.addField(`Members`, message.guild.memberCount, true)
+        embed.addField(`Name`, message.guild.name, true)
+        embed.addField(`Region`, message.guild.region, true)
+        embed.addField(`Owner`, message.guild.owner.tag, true)
+        embed.addField(`ID`, message.guild.id, true)
+        embed.setColor(`003fff`)
+        embed.setThumbnail(message.guild.iconURL)
+        message.channel.sendEmbed(embed)
+    }
+    
+    if (message.content.startsWith(`m!avatar`)) {
+        const user = message.mentions.users.first()
+        if(!user) {
+            return message.channel.send(message.author.displayAvatarURL)
+        }
+        message.channel.send(user.displayAvatarURL)
+    }
+    
+    if (message.content.startsWith(`m!searchgif`)) {
 
-    if (message.content.startsWith(`c!guilds`)) {
-        const guildArray = client.guilds.map((guild) => {
-            return `${guild.name} ${guild.memberCount}`;
+        let args19 = cont.slice(1);
+        let args17 = (args19.join(' '));
+
+        if (!args[0]) return message.channel.send("Please put a gif name!");
+
+        gifSearch.query(args17).then(
+            gifUrl => {
+                var gembed = new discord.RichEmbed()
+                gembed.setColor(`RANDOM`)
+                gembed.setImage(gifUrl)
+                message.channel.sendEmbed(gembed)
+            }
+        )
+
+    }
+    
+    if (message.content.startsWith(`m!trumpquote`)) {
+        snek.get(api).then(r => {
+            let embed = new discord.RichEmbed()
+            embed.setTitle('Trump quotes generator')
+            embed.setThumbnail(`https://cdn.discordapp.com/attachments/465273405030137887/465290492704456704/download_20.jpeg`)
+            embed.setDescription(r.body.message)
+            embed.setColor('RANDOM')
+            message.channel.send(embed)
         })
-        const ccembed = new discord.RichEmbed()
-        ccembed.setColor(`RED`)
-        ccembed.addField(`Guilds`, `${guildArray.join("\n")}`)
-        ccembed.setImage(client.avatarURL)
-        message.channel.send(ccembed)
-        message.channel.send(`\`\`\`${guildArray.join("\n")}\`\`\``)
     }
+    
+    if (message.content.startsWith("m!userinfo")) {
+        const embed2 = new discord.RichEmbed()
+        embed2.setDescription(`This user's info`)
+        embed2.setAuthor(message.author.username)
+        embed2.addField(`Gender`, gender[message.author.id].gender)
+        embed2.setColor(`003fff`)
+        embed2.addField(`Full Username`, `${message.author.username}#${message.author.discriminator}`)
+        embed2.addField(`ID`, message.author.id)
+        embed2.addField(`Created At`, message.author.createdAt)
+        embed2.setThumbnail(message.author.avatarURL)
+        message.channel.sendEmbed(embed2)
+    }
+    
+    if (message.content.startsWith(`m!gender`)) {
+        const margs = message.content.slice(9)
+        if(!margs) return message.channel.send(`Please put your gender next time!`)
+        console.log(margs)
+        if(!gender[message.author.id]) {
+            gender[message.author.id] = {
+                gender: margs
+            }
+        }
+        fs.writeFile("./gender.json", JSON.stringify(gender), (err) => {
+            if(err) console.log(err).then(
+                
+            )
+        })
+        if (margs == `Female`) return message.channel.send(`You're gender has been set to female! :girl:`)
+        if (margs == `female`) return message.channel.send(`You're gender has been set to female! :girl:`)
+        if (margs == `male`) return message.channel.send(`You're gender has been set to male! :boy:`)
+        if (margs == `Male`) return message.channel.send(`You're gender has been set to male! :boy:`)
+        if (margs == `neutral`) return message.channel.send(`No such thing.`)
+        if (margs == `Gender Neutral`) return message.channel.send(`Lies.`)
+    }
+
+    
+    if (message.content.startsWith(`m!bully`)) {
+        let mUser = message.mentions.users.first()
+        let mUser2 = message.mentions.users.last()
+        const args29 = cont.slice(1)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://media.discordapp.net/attachments/463426578135908352/463496757922234388/Being_Bullied.jpg?width=1725&height=1170`;
+        Jimp.read(message.author.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .resize(357, 357)
+                      .write("bullier.jpg");
+            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
+            if (err) throw err;
+            imagetouse2.quality(60)
+                      .resize(594, 594)
+                      .write("kidbeingbullied.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 0, 178 )
+                      .composite( imagetouse2, 1027, 38)
+                      .write("bully.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'bully.jpg'}]})
+                }
+            )})}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!say`)) {
+        const args25 = cont.slice()
+        
+        const sayMessage = args25.join(" ");
+        message.channel.send(sayMessage)
+    }
+    
+   
+    
+    if (message.content.startsWith(`m!shove`)) {
+        let mUser = message.mentions.users.first()
+        let mUser2 = message.mentions.users.last() 
+        const args29 = cont.slice(1)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463503583539625984/shutterstock_127994624.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .resize(655, 655)
+                      .write("shove1.jpg");
+            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
+                if (err) throw err;
+                imagetouse2.quality(60)
+                           .resize(792, 792)
+                           .write("shove2.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 89, 220 )
+                      .composite( imagetouse2, 1273, 256)
+                      .write("shoved.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'shoved.jpg'}]})
+                }
+            )})}
+        )})
+    }
+    
+    if (message.content.startsWith ("m!8ball")) {
+        ballMessage = message.content.slice (8); // n ! 8 b a l l [your message]
+        number = 20;
+        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
+        switch (random) {
+            case 1: message.channel.send ("It is certain."); break;
+            case 2: message.channel.send ("As I see it, yes."); break;
+            case 3: message.channel.send ("Reply hazy, please try again."); break;
+            case 4: message.channel.send ("Don't count on it."); break;
+            case 5: message.channel.send ("It is decidedly so."); break;
+            case 6: message.channel.send ("Yes, definitely."); break;
+            case 7: message.channel.send ("Without a doubt."); break;
+            case 8: message.channel.send ("Most likely."); break;
+            case 9: message.channel.send ("Outlook is good."); break;
+            case 10: message.channel.send ("Ask again later. (Watch Korean Rage)"); break;
+            case 11: message.channel.send ("Better not tell you."); break;
+            case 12: message.channel.send ("My reply is no."); break;
+            case 13: message.channel.send ("My sources say no.."); break;
+            case 14: message.channel.send ("You may rely on it."); break;
+            case 15: message.channel.send ("Signs point to yes."); break;
+            case 16: message.channel.send ("Concetrate and ask again."); break;
+            case 17: message.channel.send ("Very doubtful."); break;
+            case 18: message.channel.send ("Yes."); break;
+            case 19: message.channel.send ("Cannot predict now."); break;
+            case 20: message.channel.send ("Outlook is not so good."); break;
+        }
+    }
+    
+    if (message.content.startsWith(`m!tranny`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/463426578135908352/463673472846004235/5852d7ef120000c40beef7dd.jpeg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.8)
+                      .resize(185, 185)
+                      .write("trannykid.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 344, 205 )
+                      .write("transkid.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'transkid.jpg'}]})
+                }
+            )}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!thug`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://i.imgur.com/EgxsA9V.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.8)
+                      .resize(256, 256)
+                      .write("imagetouse.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 400, 212 )
+                      .write("thug.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
+                }
+            )}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!grey`)) {
+        let mUser = message.mentions.users.first()
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude) {
+            
+            if (err) throw err;
+            mydude.resize(256, 256)  
+                  .quality(60)
+                  .greyscale()
+                  .write("lena-small-bw.jpg")
+
+            mydude.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'lena-small-bw.jpg'}]})
+            })
+        })
+        
+
+    }
+    
+    if (message.content.startsWith(`m!commie`)) {
+        let mUser = message.mentions.users.first()
+        let mUser2 = message.mentions.users.last()
+        const args29 = cont.slice(1)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://cdn.discordapp.com/attachments/358448632812535820/463432544831012864/image.png`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .resize(176, 176)
+                      .write("imagetouse.jpg");
+            Jimp.read(mUser2.avatarURL, function (err, imagetouse2) {
+            if (err) throw err;
+            imagetouse2.quality(60)
+                      .resize(191, 169)
+                      .write("imagetouse2.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .composite( imagetouse, 473, 0 )
+                      .composite( imagetouse2, 84, 23)
+                      .write("commie.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'commie.jpg'}]})
+                }
+            )})}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!trans`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://i.imgur.com/YYgoI3H.png`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.34)
+                      .resize(256, 256)
+                      .write("imagetouse.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .resize(256, 256)
+                      .composite( imagetouse, 0, 0 )
+                      .write("thug.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
+                }
+            )}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!gay`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://i.imgur.com/Wzlskgl.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.34)
+                      .resize(256, 256)
+                      .write("imagetouse.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .resize(256, 256)
+                      .composite( imagetouse, 0, 0 )
+                      .write("thug.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
+                }
+            )}
+        )})
+    }
+
+    if (message.content.startsWith(`m!jew`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://i.imgur.com/6jBp4PD.png`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.34)
+                      .resize(256, 256)
+                      .write("imagetouse.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .resize(256, 256)
+                      .composite( imagetouse, 0, 0 )
+                      .write("thug.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
+                }
+            )}
+        )})
+    }
+    
+    if (message.content.startsWith(`m!wasted`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        var imagetobase = `https://i.imgur.com/iCaYtUo.jpg`;
+        Jimp.read(mUser.avatarURL, function (err, imagetouse) {
+            if (err) throw err;
+            imagetouse.quality(60)
+                      .opacity(0.34)
+                      .resize(256, 256)
+                      .write("imagetouse.jpg");
+            Jimp.read(imagetobase, function (err, mydude) {
+                if (err) throw err;
+                mydude.quality(60)
+                      .resize(256, 256)
+                      .composite( imagetouse, 0, 0 )
+                      .write("thug.jpg");
+                mydude.getBuffer('image/jpeg', (err, buf) => {
+                    if (err) return err
+                    message.channel.send({files: [{attachment: buf, name: 'thug.jpg'}]})
+                }
+            )}
+        )})
+    }
+
+    if (message.content.startsWith(`m!modlist`)) {
+        message.channel.send(`Colonial \n West \n Korean \n Sundal`)
+    }
+
+    if (message.content.startsWith(`m!ban`)) {
+        const kChannel = message.guild.channels.find(`name`, `logs`)
+        const args5 = cont.slice(1)
+        const args6 = args5.join(" ")
+        if (!message.member.hasPermission(`BAN_MEMBERS`)) return message.channel.send(`You're not allowed to do that!`)
+        var member = message.mentions.members.first();
+        member.ban().then((member) => {
+            message.channel.send(":wave: " + member.displayName + " has been successfully banned :point_right: :door: ");
+        }).catch(() => {
+            message.channel.send("Access Denied");
+        })
+        kChannel.send(`${member}, has been banned`)
+        const kembed = new discord.RichEmbed()
+        kembed.addField(`Reason`, `${args6}`)
+        kembed.setTitle(`Banned user: ${member}`)
+        kembed.addField(`Ban length`, `Forever`)
+        kembed.setThumbnail(`${message.guild.iconURL}`)
+        kembed.addField(`Banned by`, `${message.author.tag}`)
+        kembed.setFooter(`Mappersphere`, message.author.displayAvatarURL)
+        kembed.setTimestamp()
+        message.channel.send(kembed)
+    }
+
+    if (message.content.startsWith(`m!help`)) {
+        if(!message.member.hasPermission(`KICK_MEMBERS`)) return message.channel.send(`You can't do that!`)
+        const hembed = new discord.RichEmbed()
+        hembed.setThumbnail(message.guild.iconURL)
+        hembed.setTimestamp()
+        hembed.setColor(`BLUE`)
+        hembed.addField(`m!kick`, `Kicks a user`)
+        hembed.addField(`m!ban`, `Bans a user`)
+        message.channel.send(hembed)
+    }
+
+    if (message.content.startsWith(`m!warn`)) {
+        if (!message.member.hasPermission(`MANAGE_MESSAGES`)) return message.channel.send(`You do not have permission to do this!`)
+        var wUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if (!wUser) return message.channel.send("Please mention a user!");
+        args13 = cont.slice(1)
+        const reason = args13.join(" ") 
+        if (!message.guild.member(client.user).hasPermission('MANAGE_ROLES_OR_PERMISSIONS')) return message.channel.send('**I do not have the correct permissions.**').catch(console.error)
+
+        var warnEmbed = new discord.RichEmbed()
+        warnEmbed.setTitle(`${message.author.username} has warned someone!`)
+        warnEmbed.setColor("RED")
+        warnEmbed.addField("Warned User", `${wUser} with ID: ${wUser.id}`)
+        warnEmbed.addField("Warned By", `${message.author}`)
+        warnEmbed.addField("Channel", message.channel)
+        warnEmbed.addField("Time", message.createdAt)
+        warnEmbed.addField("Reason", reason);
+        warnEmbed.setThumbnail(message.guild.iconURL)
+
+        var warnchannel = message.guild.channels.find(`name`, "logs");
+        if (!warnchannel) return message.channel.send("**Can't find logs channel.**");
+
+
+        warnchannel.send(warnEmbed);
+
+    }
+
+    if (message.content.startsWith(`m!report`)) {
+        if (!message.member.hasPermission(`MANAGE_MESSAGES`)) return message.channel.send(`You do not have permission to do this!`)
+        var rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
+        if (!rUser) return message.channel.send("Please mention a user!");
+        args13 = cont.slice(1)
+        const reason = args13.join(" ")
+        if (!message.guild.member(client.user).hasPermission('MANAGE_ROLES_OR_PERMISSIONS')) return message.channel.send('**I do not have the correct permissions.**').catch(console.error)
+
+        var reportEmbed = new discord.RichEmbed()
+        reportEmbed.setTitle(`${message.author.username} has reported someone!`)
+        reportEmbed.setColor("RED")
+        reportEmbed.addField("Reported User", `${rUser} with ID: ${rUser.id}`)
+        reportEmbed.addField("Reported By", `${message.author}`)
+        reportEmbed.addField("Channel", message.channel)
+        reportEmbed.addField("Time", message.createdAt)
+        reportEmbed.addField("Reason", reason);
+        reportEmbed.setThumbnail(message.guild.iconURL)
+
+        var reportschannel = message.guild.channels.find(`name`, "logs");
+        if (!reportschannel) return message.channel.send("**Can't find logs channel.**");
+
+
+        reportschannel.send(reportEmbed);
+    }
+    
+    if (message.content.startsWith(`m!light`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude) {
+            if (err) throw err;
+            mydude.resize(256, 256)  
+                  .quality(60)
+                  .write("brightlmao.jpg")
+                  .brightness(+0.6)
+            mydude.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'brightlmao.jpg'}]})
+            })
+        })
+    }
+
+    if (message.content.startsWith(`m!dark`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude) {
+            if (err) throw err;
+            mydude.resize(256, 256)  
+                  .quality(60)
+                  .write("darklmao.jpg")
+                  .brightness(-0.6)
+            mydude.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'darklmao.jpg'}]})
+            })
+        })
+    }
+
+    if (message.content.startsWith(`m!contrast`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude) {
+            if (err) throw err;
+            mydude.resize(256, 256)  
+                  .quality(60)
+                  .write("contrastlmao.jpg")
+                  .contrast(+0.6)
+            mydude.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'contrastlmao.jpg'}]})
+            })
+        })
+    }
+
+    if (message.content.startsWith(`m!nocontrast`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude) {
+            if (err) throw err;
+            mydude.resize(256, 256)  
+                  .quality(60)
+                  .write("nocontrastlmao.jpg")
+                  .contrast(-0.6)
+            mydude.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'nocontrastlmao.jpg'}]})
+            })
+        })
+    }
+
+    if (message.content.startsWith(`m!dither`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude3) {
+            if (err) throw err;
+            mydude3.quality(60)  
+                  .write("dither565lmao.jpg")
+                  .dither565()
+            mydude3.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'dither565lmao.jpg'}]})
+            })
+        })
+    }
+
+    if (message.content.startsWith(`m!invert`)) {
+        let mUser = message.mentions.users.first()
+        const args29 = cont.slice(1)
+        if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
+        if(!mUser) return message.channel.send(`Please specifify a user!`)
+        const mUserA = mUser.avatarURL
+        Jimp.read(mUser.avatarURL, function (err, mydude) {
+            if (err) throw err;
+            mydude.resize(256, 256)  
+                  .quality(60)
+                  .write("invertlmao.jpg")
+                  .invert()
+                  .composite( src, x, y );   
+            mydude.getBuffer('image/jpeg', (err, buf) => {
+
+                if (err) return err
+                message.channel.send({files: [{attachment: buf, name: 'invertlmao.jpg'}]})
+            })
+        })
+    }
+
+    ex1 = "./memes/ex1.png"; ex2 = "./memes/ex2.png"; ex3 = "./memes/ex3.png"; ex4 = "./memes/ex4.png"; ex5 = "./memes/ex5.png"; ex6 = "./memes/ex6.png"; ex7 = "./memes/ex7.png"; ex8 = "./memes/ex8.png"; ex9 = "./memes/ex9.png"; ex10 = "./memes/ex10.png"; ex11 = "./memes/ex11.png"; ex12 = "./memes/ex12.png"; ex13 = "./memes/ex13.png"; ex14 = "./memes/ex14.png"; ex15 = "./memes/ex15.png"; ex16 =  "./memes/ex16.png"; ex17 = "./memes/ex17.png"; ex18 = "./memes/ex18.png"; ex19 = "./memes/ex19.png"; ex20 = "./memes/ex20.jpg"; ex21 = "./memes/ex21.png"; ex22 = "./memes/ex22.png"; ex23 = "./memes/ex23.png"; ex24 = "./memes/ex24.png"; ex25 = "./memes/ex25.png"; ex26 = "./memes/ex26.png"; ex27 = "./memes/ex27.png"; ex28 = "./memes/ex28.png"; ex29 = "./memes/ex29.png";
+    if (message.content.startsWith ("c!expose")) {
+        number = 29;
+        var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;  
+        switch (random) {
+            case 1: message.channel.send ({ files: [ex1] }); break;
+            case 2: message.channel.send ({ files: [ex2] }); break;
+            case 3: message.channel.send ({ files: [ex3] }); break;
+            case 4: message.channel.send ({ files: [ex4] }); break;
+            case 5: message.channel.send ({ files: [ex5] }); break;
+            case 6: message.channel.send ({ files: [ex6] }); break;
+            case 7: message.channel.send ({ files: [ex7] }); break;
+            case 8: message.channel.send ({ files: [ex8] }); break;
+            case 9: message.channel.send ({ files: [ex9] }); break;
+            case 10: message.channel.send ({ files: [ex10] }); break;
+            case 11: message.channel.send ({ files: [ex11] }); break;
+            case 12: message.channel.send ({ files: [ex12] }); break;
+            case 13: message.channel.send ({ files: [ex13] }); break;
+            case 14: message.channel.send ({ files: [ex14] }); break;
+            case 15: message.channel.send ({ files: [ex15] }); break;
+            case 16: message.channel.send ({ files: [ex16] }); break;
+            case 17: message.channel.send ({ files: [ex17] }); break;
+            case 18: message.channel.send ({ files: [ex18] }); break;
+            case 19: message.channel.send ({ files: [ex19] }); break;
+            case 20: message.channel.send ({ files: [ex20] }); break;
+            case 21: message.channel.send ({ files: [ex21] }); break;
+            case 22: message.channel.send ({ files: [ex22] }); break;
+            case 23: message.channel.send ({ files: [ex23] }); break;
+            case 24: message.channel.send ({ files: [ex24] }); break;
+            case 25: message.channel.send ({ files: [ex25] }); break;
+            case 26: message.channel.send ({ files: [ex26] }); break;
+            case 27: message.channel.send ({ files: [ex27] }); break;
+            case 28: message.channel.send ({ files: [ex28] }); break;
+            case 29: message.channel.send ({ files: [ex29] }); break;
+        }
+    }
+
+    
+
+
 });
-
-
-
 client.login (token);
