@@ -16,7 +16,7 @@ let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 client.on ("ready", () => {
     console.log ("Colonial smells")
-    client.user.setActivity ("m!help")
+    client.user.setActivity ("c!help")
     client.user.setAvatar("https://cdn.discordapp.com/attachments/459815018230317059/465284390776340500/unknown.png")
     client.user.setUsername("Mappersphere")
     
@@ -51,7 +51,7 @@ client.on('message', async (message) => {
         };
     }
 
-    if (message.content.startsWith(`m!kick`)) {
+    if (message.content.startsWith(`c!kick`)) {
         const args7 = cont.slice(1)
         const args8 = args7.join(" ")
         const kChannel = message.guild.channels.find(`name`, `logs`)
@@ -73,46 +73,46 @@ client.on('message', async (message) => {
         kChannel.send(bembed)
     }
     
-    if (message.content.startsWith(`m!fun`)) {
+    if (message.content.startsWith(`c!fun`)) {
         const fuembed = new discord.RichEmbed
         const fuuembed = new discord.RichEmbed
         fuembed.setThumbnail(message.guild.iconURL)
         fuembed.setTitle(`List of Fun Commands!`)
-        fuembed.addField(`m!8ball`, `A simple 8ball command`)
-        fuembed.addField(`m!safe`, `Your safe space.` )
-        fuembed.addField(`m!kiss`, `Kiss command`)
-        fuembed.addField(`m!weeb`, `You're a weeb`)
-        fuembed.addField(`m!pride`, `Gay Pride`)
-        fuembed.addField(`m!bully`, `Bully a user`)
-        fuembed.addField(`m!shove`, `Shove a user into a locker`)
-        fuembed.addField(`m!tranny`, `Makes u trans`)
-        fuembed.addField(`m!gay`, `Makes u gay`)
-        fuembed.addField(`m!commie`, `Makes you a commie`)
-        fuembed.addField(`m!grey`, `makes u grey`)
-        fuembed.addField(`m!jew`, `Image manipulation`)
-        fuembed.addField(`m!wasted`, `Image manipulation`)
-        fuembed.addField(`m!contrast`, `Image manipulation`)
-        fuembed.addField(`m!dark`, `Image manipulation`)
-        fuembed.addField(`m!light`, `Image manipulation`)
-        fuembed.addField(`m!noncontrast`, `Image manipulation`)
-        fuembed.addField(`m!dither`, `Image manipulation`)
-        fuembed.addField(`m!invert`, `Image manipulation`)
-        fuembed.addField(`m!thug`, `Image manipulation`)
-        fuembed.addField(`m!say`, `Image manipulation`)
-        fuembed.addField(`m!meme`, `Meme Command`)
-        fuembed.addField(`m!fuckmarrykill`, `Fuck Marry Kill`)
-        fuembed.addField(`m!weather`, `Gives you the weather for a given city`)
-        fuembed.addField(`m!truthme`, `Asks you a question`)
-        fuuembed.addField(`m!myfuture`, `Your Future o.o`)
-        fuuembed.addField(`m!avatar`, `Gives the avatar of a mentioned user or yourself`)
-        fuuembed.addField(`m!dice`, `Rolls a dice`)
-        fuuembed.addField(`m!serverinfo`, `Server Info`)
-        fuuembed.addField(`m!trumpquote`, `A quote by the 45th president`)
-        fuuembed.addField(`m!userinfo`, `User info`)
-        fuuembed.addField(`m!gender`, `sets your gender`)
-        fuuembed.addField(`m!whatsmygender`, `whats your gender?`)
-        fuuembed.addField(`m!orientation`, `sets your sexual orientation`)
-        fuuembed.addField(`m!whatsmyorientation`, `whats your sexual orientation?`)
+        fuembed.addField(`c!8ball`, `A simple 8ball command`)
+        fuembed.addField(`c!safe`, `Your safe space.` )
+        fuembed.addField(`c!kiss`, `Kiss command`)
+        fuembed.addField(`c!weeb`, `You're a weeb`)
+        fuembed.addField(`c!pride`, `Gay Pride`)
+        fuembed.addField(`c!bully`, `Bully a user`)
+        fuembed.addField(`c!shove`, `Shove a user into a locker`)
+        fuembed.addField(`c!tranny`, `Makes u trans`)
+        fuembed.addField(`c!gay`, `Makes u gay`)
+        fuembed.addField(`c!commie`, `Makes you a commie`)
+        fuembed.addField(`c!grey`, `makes u grey`)
+        fuembed.addField(`c!jew`, `Image manipulation`)
+        fuembed.addField(`c!wasted`, `Image manipulation`)
+        fuembed.addField(`c!contrast`, `Image manipulation`)
+        fuembed.addField(`c!dark`, `Image manipulation`)
+        fuembed.addField(`c!light`, `Image manipulation`)
+        fuembed.addField(`c!noncontrast`, `Image manipulation`)
+        fuembed.addField(`c!dither`, `Image manipulation`)
+        fuembed.addField(`c!invert`, `Image manipulation`)
+        fuembed.addField(`c!thug`, `Image manipulation`)
+        fuembed.addField(`c!say`, `Image manipulation`)
+        fuembed.addField(`c!meme`, `Meme Command`)
+        fuembed.addField(`c!fuckmarrykill`, `Fuck Marry Kill`)
+        fuembed.addField(`c!weather`, `Gives you the weather for a given city`)
+        fuembed.addField(`c!truthme`, `Asks you a question`)
+        fuuembed.addField(`c!myfuture`, `Your Future o.o`)
+        fuuembed.addField(`c!avatar`, `Gives the avatar of a mentioned user or yourself`)
+        fuuembed.addField(`c!dice`, `Rolls a dice`)
+        fuuembed.addField(`c!serverinfo`, `Server Info`)
+        fuuembed.addField(`c!trumpquote`, `A quote by the 45th president`)
+        fuuembed.addField(`c!userinfo`, `User info`)
+        fuuembed.addField(`c!gender`, `sets your gender`)
+        fuuembed.addField(`c!whatsmygender`, `whats your gender?`)
+        fuuembed.addField(`c!orientation`, `sets your sexual orientation`)
+        fuuembed.addField(`c!whatsmyorientation`, `whats your sexual orientation?`)
         fuembed.setColor(`RANDOM`)
         message.channel.send(fuembed)
         message.channel.send(fuuembed)
@@ -120,11 +120,11 @@ client.on('message', async (message) => {
 
     }
     
-    if (message.content.startsWith(`m!hitname info`)) {
+    if (message.content.startsWith(`c!hitname info`)) {
         message.channel.send(`hitname is a game where two people you mention are chosen randomly. Whoever is mentioned has to change their profile picture to whatever the other person wants for 12 hours. (Note: This may only be done if both users agree to play) `)
     }
     
-    if(message.content.startsWith(`m!hitname`)) {
+    if(message.content.startsWith(`c!hitname`)) {
         let user1 = message.mentions.users.first()
         let user2 = message.mentions.users.last()
         number = 2;
@@ -137,7 +137,7 @@ client.on('message', async (message) => {
         }
     }
     
-    if (message.content.startsWith(`m!safe`)) {
+    if (message.content.startsWith(`c!safe`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -164,7 +164,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!orientation`)) {
+    if (message.content.startsWith(`c!orientation`)) {
         const margs = message.content.slice(14)
         if(!margs) return message.channel.send(`Please put your orientation next time!`)
         console.log(margs)
@@ -186,17 +186,17 @@ client.on('message', async (message) => {
         message.channel.send(`Orientation has been set!`)
     }
     
-    if (message.content.startsWith(`m!whatsmygender`)) {
-        if(!gender[message.author.id]) return message.channel.send(`Please set your gender! (m!gender [gender here])`)
+    if (message.content.startsWith(`c!whatsmygender`)) {
+        if(!gender[message.author.id]) return message.channel.send(`Please set your gender! (c!gender [gender here])`)
         message.channel.send(gender[message.author.id].gender)
     }
     
-    if (message.content.startsWith(`m!whatsmyorientation`)) {
-        if(!orientation[message.author.id]) return message.channel.send(`Please set your orientation! (m!orientation [orientation here])`)
+    if (message.content.startsWith(`c!whatsmyorientation`)) {
+        if(!orientation[message.author.id]) return message.channel.send(`Please set your orientation! (c!orientation [orientation here])`)
         message.channel.send(orientation[message.author.id].orientation)
     }
     
-    if (message.content.startsWith(`m!solarsystem`)) {
+    if (message.content.startsWith(`c!solarsystem`)) {
         message.channel.send(`What would you like to know about?`)
 
         const filter = m => m.author.equals(message.author);
@@ -374,7 +374,7 @@ client.on('message', async (message) => {
         
     }
     
-    if (message.content.startsWith(`m!kiss`)) {
+    if (message.content.startsWith(`c!kiss`)) {
         let mUser = message.mentions.users.first()
         let mUser2 = message.mentions.users.last()
         const args29 = cont.slice(1)
@@ -405,7 +405,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!weeb`)) {
+    if (message.content.startsWith(`c!weeb`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -433,7 +433,7 @@ client.on('message', async (message) => {
     }
 
     
-    if (message.content.startsWith(`m!pride`)) {
+    if (message.content.startsWith(`c!pride`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -460,7 +460,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!minecraft`)) {
+    if (message.content.startsWith(`c!minecraft`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -488,7 +488,7 @@ client.on('message', async (message) => {
     }
     
     
-    if (message.content.startsWith(`m!meme`)) {
+    if (message.content.startsWith(`c!meme`)) {
         meme(function(data) {
             const embed = new discord.RichEmbed()
             .setTitle(data.title[0])
@@ -497,7 +497,7 @@ client.on('message', async (message) => {
             message.channel.send(embed);
         })
     }
-    if (message.content.startsWith(`m!fuckmarrykill`)) {
+    if (message.content.startsWith(`c!fuckmarrykill`)) {
 
         var membed = new discord.RichEmbed()
         var kembed = new discord.RichEmbed()
@@ -531,7 +531,7 @@ client.on('message', async (message) => {
         }
     }
     
-    if (message.content.startsWith(`m!achievement`)) {
+    if (message.content.startsWith(`c!achievement`)) {
         const aLink = `https://www.minecraftskinstealer.com/achievement/a.php?i=16&h=Achievement+get%21&t=`;
         const margs = message.content.split(" ").slice(1);
         if(margs.length > 22) return message.channel.send(`Please make it 22 characters or lower!`)
@@ -544,7 +544,7 @@ client.on('message', async (message) => {
 
     }
 
-    if (message.content.startsWith (`m!weather`)) {
+    if (message.content.startsWith (`c!weather`)) {
 
         weather.find({search: args.join(" "), degreeType: `F`}, function(err,result) {
             if (err) message.channel.send(err);
@@ -576,7 +576,7 @@ client.on('message', async (message) => {
 
 
 
-    if (message.content.startsWith(`m!truthme`)) {
+    if (message.content.startsWith(`c!truthme`)) {
         number = 50;
         var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
         switch (random) {
@@ -633,7 +633,7 @@ client.on('message', async (message) => {
         }
     }
     
-    if (message.content.startsWith ("m!myfuture")) {
+    if (message.content.startsWith ("c!myfuture")) {
         number = 32;
         var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
         switch (random) {
@@ -664,7 +664,7 @@ client.on('message', async (message) => {
         }
     }
     
-    if (message.content.startsWith ("m!dice")) {
+    if (message.content.startsWith ("c!dice")) {
         number = 7;
         var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
         switch (random) {
@@ -678,7 +678,7 @@ client.on('message', async (message) => {
         }
     }
     
-    if (message.content.startsWith("m!serverinfo")) {
+    if (message.content.startsWith("c!serverinfo")) {
         const embed = new discord.RichEmbed()
         embed.addField(`Members`, message.guild.memberCount, true)
         embed.addField(`Name`, message.guild.name, true)
@@ -690,7 +690,7 @@ client.on('message', async (message) => {
         message.channel.sendEmbed(embed)
     }
     
-    if (message.content.startsWith(`m!avatar`)) {
+    if (message.content.startsWith(`c!avatar`)) {
         const user = message.mentions.users.first()
         if(!user) {
             return message.channel.send(message.author.displayAvatarURL)
@@ -698,7 +698,7 @@ client.on('message', async (message) => {
         message.channel.send(user.displayAvatarURL)
     }
     
-    if (message.content.startsWith(`m!searchgif`)) {
+    if (message.content.startsWith(`c!searchgif`)) {
 
         let args19 = cont.slice(1);
         let args17 = (args19.join(' '));
@@ -716,7 +716,7 @@ client.on('message', async (message) => {
 
     }
     
-    if (message.content.startsWith(`m!trumpquote`)) {
+    if (message.content.startsWith(`c!trumpquote`)) {
         snek.get(api).then(r => {
             let embed = new discord.RichEmbed()
             embed.setTitle('Trump quotes generator')
@@ -727,7 +727,7 @@ client.on('message', async (message) => {
         })
     }
     
-    if (message.content.startsWith("m!userinfo")) {
+    if (message.content.startsWith("c!userinfo")) {
         const embed2 = new discord.RichEmbed()
         embed2.setDescription(`This user's info`)
         embed2.setAuthor(message.author.username)
@@ -740,7 +740,7 @@ client.on('message', async (message) => {
         message.channel.sendEmbed(embed2)
     }
     
-    if (message.content.startsWith(`m!gender`)) {
+    if (message.content.startsWith(`c!gender`)) {
         const margs = message.content.slice(9)
         if(!margs) return message.channel.send(`Please put your gender next time!`)
         console.log(margs)
@@ -763,7 +763,7 @@ client.on('message', async (message) => {
     }
 
     
-    if (message.content.startsWith(`m!bully`)) {
+    if (message.content.startsWith(`c!bully`)) {
         let mUser = message.mentions.users.first()
         let mUser2 = message.mentions.users.last()
         const args29 = cont.slice(1)
@@ -794,7 +794,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!say`)) {
+    if (message.content.startsWith(`c!say`)) {
         const args25 = cont.slice()
         
         const sayMessage = args25.join(" ");
@@ -803,7 +803,7 @@ client.on('message', async (message) => {
     
    
     
-    if (message.content.startsWith(`m!shove`)) {
+    if (message.content.startsWith(`c!shove`)) {
         let mUser = message.mentions.users.first()
         let mUser2 = message.mentions.users.last() 
         const args29 = cont.slice(1)
@@ -834,7 +834,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith ("m!8ball")) {
+    if (message.content.startsWith ("c!8ball")) {
         ballMessage = message.content.slice (8); // n ! 8 b a l l [your message]
         number = 20;
         var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
@@ -862,7 +862,7 @@ client.on('message', async (message) => {
         }
     }
     
-    if (message.content.startsWith(`m!tranny`)) {
+    if (message.content.startsWith(`c!tranny`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -889,7 +889,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!thug`)) {
+    if (message.content.startsWith(`c!thug`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -916,7 +916,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!grey`)) {
+    if (message.content.startsWith(`c!grey`)) {
         let mUser = message.mentions.users.first()
         const mUserA = mUser.avatarURL
         Jimp.read(mUser.avatarURL, function (err, mydude) {
@@ -937,7 +937,7 @@ client.on('message', async (message) => {
 
     }
     
-    if (message.content.startsWith(`m!commie`)) {
+    if (message.content.startsWith(`c!commie`)) {
         let mUser = message.mentions.users.first()
         let mUser2 = message.mentions.users.last()
         const args29 = cont.slice(1)
@@ -968,7 +968,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!trans`)) {
+    if (message.content.startsWith(`c!trans`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -996,7 +996,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!gay`)) {
+    if (message.content.startsWith(`c!gay`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -1023,7 +1023,7 @@ client.on('message', async (message) => {
         )})
     }
 
-    if (message.content.startsWith(`m!jew`)) {
+    if (message.content.startsWith(`c!jew`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -1050,7 +1050,7 @@ client.on('message', async (message) => {
         )})
     }
     
-    if (message.content.startsWith(`m!wasted`)) {
+    if (message.content.startsWith(`c!wasted`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
 
@@ -1077,11 +1077,11 @@ client.on('message', async (message) => {
         )})
     }
 
-    if (message.content.startsWith(`m!modlist`)) {
+    if (message.content.startsWith(`c!modlist`)) {
         message.channel.send(`Colonial \n West \n Korean \n Sundal`)
     }
 
-    if (message.content.startsWith(`m!ban`)) {
+    if (message.content.startsWith(`c!ban`)) {
         const kChannel = message.guild.channels.find(`name`, `logs`)
         const args5 = cont.slice(1)
         const args6 = args5.join(" ")
@@ -1104,18 +1104,18 @@ client.on('message', async (message) => {
         message.channel.send(kembed)
     }
 
-    if (message.content.startsWith(`m!help`)) {
+    if (message.content.startsWith(`c!help`)) {
         if(!message.member.hasPermission(`KICK_MEMBERS`)) return message.channel.send(`You can't do that!`)
         const hembed = new discord.RichEmbed()
         hembed.setThumbnail(message.guild.iconURL)
         hembed.setTimestamp()
         hembed.setColor(`BLUE`)
-        hembed.addField(`m!kick`, `Kicks a user`)
-        hembed.addField(`m!ban`, `Bans a user`)
+        hembed.addField(`c!kick`, `Kicks a user`)
+        hembed.addField(`c!ban`, `Bans a user`)
         message.channel.send(hembed)
     }
 
-    if (message.content.startsWith(`m!warn`)) {
+    if (message.content.startsWith(`c!warn`)) {
         if (!message.member.hasPermission(`MANAGE_MESSAGES`)) return message.channel.send(`You do not have permission to do this!`)
         var wUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
         if (!wUser) return message.channel.send("Please mention a user!");
@@ -1141,7 +1141,7 @@ client.on('message', async (message) => {
 
     }
 
-    if (message.content.startsWith(`m!report`)) {
+    if (message.content.startsWith(`c!report`)) {
         if (!message.member.hasPermission(`MANAGE_MESSAGES`)) return message.channel.send(`You do not have permission to do this!`)
         var rUser = message.guild.member(message.mentions.users.first() || message.guild.members.get(args[0]));
         if (!rUser) return message.channel.send("Please mention a user!");
@@ -1166,7 +1166,7 @@ client.on('message', async (message) => {
         reportschannel.send(reportEmbed);
     }
     
-    if (message.content.startsWith(`m!light`)) {
+    if (message.content.startsWith(`c!light`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
         if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
@@ -1186,7 +1186,7 @@ client.on('message', async (message) => {
         })
     }
 
-    if (message.content.startsWith(`m!dark`)) {
+    if (message.content.startsWith(`c!dark`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
         if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
@@ -1206,7 +1206,7 @@ client.on('message', async (message) => {
         })
     }
 
-    if (message.content.startsWith(`m!contrast`)) {
+    if (message.content.startsWith(`c!contrast`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
         if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
@@ -1226,7 +1226,7 @@ client.on('message', async (message) => {
         })
     }
 
-    if (message.content.startsWith(`m!nocontrast`)) {
+    if (message.content.startsWith(`c!nocontrast`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
         if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
@@ -1246,7 +1246,7 @@ client.on('message', async (message) => {
         })
     }
 
-    if (message.content.startsWith(`m!dither`)) {
+    if (message.content.startsWith(`c!dither`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
         if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
@@ -1265,7 +1265,7 @@ client.on('message', async (message) => {
         })
     }
 
-    if (message.content.startsWith(`m!invert`)) {
+    if (message.content.startsWith(`c!invert`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
         if(!args29) return message.channel.send(`Please insert a value (-150 <-> 150`)
