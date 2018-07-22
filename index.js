@@ -405,6 +405,45 @@ client.on('message', async (message) => {
         )})
     }
     
+    if (message.content.startsWith ("c!hwid")) {
+            number = 32;
+            var random = Math.floor (Math.random() * (number - 1 + 1)) + 1;
+            switch (random) {
+                case 1: message.channel.send ("You will die at an LGBT support rally."); break;
+                case 2: message.channel.send ("Colonial's Weeb Gas Chamber."); break;
+                case 3: message.channel.send ("You challenge a furry to the fight and lose."); break;
+                case 4: message.channel.send ("WAKEAN!!!!!!!"); break;
+                case 5: message.channel.send ("Your dick gets stuck in the person you're fucking."); break;
+                case 6: message.channel.send ("Wait... \n 3... \n 2... \n 1... \n Oh dear... Goodbye."); break;
+                case 7: message.channel.send ("Jap turns on his webcam in the middle of a call."); break;
+                case 8: message.channel.send ("Cheezus Christ wants you."); break;
+                case 9: message.channel.send ("You are assassinated as Dictator of China."); break;
+                case 10: message.channel.send ("Jap kills you because you stole his Korean Tennis Girlfriend."); break;
+                case 11: message.channel.send ("Your sex slave plots agaisnt you."); break;
+                case 12: message.channel.send ("Never chat on furry discords."); break;
+                case 13: message.channel.send ("You die while sucking your mom."); break;
+                case 14: message.channel.send ("Cloud."); break;
+                case 15: message.channel.send ("Use your zuccer-bucks to ask again."); break;
+                case 16: message.channel.send ("You discover Iri to be living in your basement and he bites you and gives you a poisonous venom which makes you die."); break;
+                case 17: message.channel.send ("Your korean tennis girlfriend leaves you for Jap."); break;
+                case 18: message.channel.send ("Strip Club, Pole, You on pole, Knife is thrown at pole."); break;
+                case 19: message.channel.send ("You end up as Cloud and commit suicide.");break;
+                case 20: message.channel.send ("You end up homeless, starvation takes your life."); break;
+                case 21: message.channel.sned ("You spammed kikc bot."); break;
+                case 22: message.channel.send ("Wonder went crazy again."); break;
+                case 23: message.channel.send ("You see Freeze's face, one, last, time..."); break;
+                case 24: message.channel.send ("You walk in on Sol and Leah fucking. Sol kills you so you don't tell."); break;
+                case 25: message.channel.send ("You catch Wakean playing Minecraft."); break;
+                case 26: message.channel.send ("You start a fire at furry con, the fire takes your life."); break;
+                case 27: message.channel.send ("An evil Elf takes your life using a breadstick."); break;
+                case 28: message.channel.send ({ files: [kang1]}); break;
+                case 29: message.channel.send ("Chinese shows you the drug he's on."); break;
+                case 30: message.channel.send ("I'm dying inside \n And all I see are demons \n I try to hide all my deepest feelings \n I'm dying inside \n And all I see are demons \n I try to hide all my deepest feelings"); break;
+                case 31: message.channel.send ("You admit you're secretly trans. Wakean appears at your door."); break;
+                case 32: message.channel.send ("You lose your nigga pass."); break;
+            }
+        }
+    
     if (message.content.startsWith(`c!weeb`)) {
         let mUser = message.mentions.users.first()
         const args29 = cont.slice(1)
