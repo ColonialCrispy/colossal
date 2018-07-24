@@ -16,7 +16,7 @@ let warns = JSON.parse(fs.readFileSync("./warnings.json", "utf8"));
 
 client.on ("ready", () => {
     console.log ("Colonial smells")
-    client.user.setActivity ("m!fun | Made by Colonial")
+    client.user.setActivity ("c!fun | Made by Colonial")
     client.user.setUsername("Colossal")
     client.user.setAvatar(`https://i.imgur.com/SzFq1GX.jpg`)
     
