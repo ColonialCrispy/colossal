@@ -171,7 +171,7 @@ client.on('message', async (message) => {
         message.member.addRole(sRole)
     }
 
-    if (message.content == `c!addrole games `) {
+    if (message.content == `c!addrole games`) {
         const sRole = message.guild.roles.find(`name`, `games`)
         message.member.addRole(sRole)
     }
