@@ -74,8 +74,9 @@ client.on('message', async (message) => {
     }
     
     if (message.content.startsWith(`c!fun`)) {
-        const fuembed = new discord.RichEmbed
-        const fuuembed = new discord.RichEmbed
+        const fuembed = new discord.RichEmbed()
+        const fuuembed = new discord.RichEmbed()
+        const fuuuembed = new discord.RichEmbed()
         fuembed.setThumbnail(message.guild.iconURL)
         fuembed.setTitle(`List of Fun Commands!`)
         fuembed.addField(`c!8ball`, `A simple 8ball command`)
@@ -113,11 +114,14 @@ client.on('message', async (message) => {
         fuuembed.addField(`c!whatsmygender`, `whats your gender?`)
         fuuembed.addField(`c!orientation`, `sets your sexual orientation`)
         fuuembed.addField(`c!whatsmyorientation`, `whats your sexual orientation?`)
-        fuembed.addField(`c!ship`, `Ships two people`)
-        fuembed.addField(`c!roles`, `Lists optional roles`)
-        fuembed.setColor(`RANDOM`)
+        fuuuembed.addField(`c!ship`, `Ships two people`)
+        fuuuembed.addField(`c!roles`, `Lists optional roles`)
+        fuembed.setColor(`BLUE`)
+        fuuembed.setColor(`BLUE`)
+        fuuuembed.setColor(`BLUE`)
         message.channel.send(fuembed)
         message.channel.send(fuuembed)
+        message.channel.send(fuuuembed)
 
 
     }
