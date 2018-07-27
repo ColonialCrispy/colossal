@@ -167,29 +167,35 @@ client.on('message', async (message) => {
     }
     
     if (message.content == `c!addrole NSFW`) {
-    const role = message.guild.roles.find(`name`, `nsfw`)
-    message.author.addRole(role)
+    const sRole = message.guild.roles.find(`name`, `nsfw`)
+    message.member.addRole(sRole)
     }
 
     if (message.content == `c!addrole games `) {
-        const role = message.guild.roles.find(`name`, `games`)
+        const sRole = message.guild.roles.find(`name`, `games`)
+        message.member.addRole(sRole)
     }
 
     if (message.content == `c!addrole Text Mapper`) {
-        const role = message.guild.roles.find(`name`, `Text`)
+        const sRole = message.guild.roles.find(`name`, `Text Mapper`)
+        message.member.addRole(sRole)
     }
 
+
     if (message.content == `c!addrole Countryball Mapper`) {
-        const role = message.guild.roles.find(`name`, `Countryballer`)
+        const sRole = message.guild.roles.find(`name`, `Countryballer`)
+        message.member.addRole(sRole)
     }
     
     if (message.content == `c!addrole Weeb`) {
-        const role = message.guild.roles.find(`name`, `Weebs`)
+        const sRole = message.guild.roles.find(`name`, `Weebs`)
+        message.member.addRole(sRole)
     }
 
 
     if (message.content == `c!addrole Contestant`) {
-        const role = message.guild.roles.find(`name`, `Contestant`)
+        const sRole = message.guild.roles.find(`name`, `Contestant`)
+        message.member.addRole(sRole)
     }
 
     if (message.content == `c!roles`) {
