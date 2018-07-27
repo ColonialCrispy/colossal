@@ -167,8 +167,8 @@ client.on('message', async (message) => {
     }
     
     if (message.content == `c!addrole NSFW`) {
-    const sRole = message.guild.roles.find(`name`, `nsfw`)
-    message.member.addRole(sRole)
+        const sRole = message.guild.roles.find(`name`, `nsfw`)
+        message.member.addRole(sRole)
     }
 
     if (message.content == `c!addrole games `) {
