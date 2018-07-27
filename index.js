@@ -182,6 +182,11 @@ client.on('message', async (message) => {
     if (message.content == `c!addrole Countryball Mapper`) {
         const role = message.guild.roles.find(`name`, `Countryballer`)
     }
+    
+    if (message.content == `c!addrole Weeb`) {
+        const role = message.guild.roles.find(`name`, `Weebs`)
+    }
+
 
     if (message.content == `c!addrole Contestant`) {
         const role = message.guild.roles.find(`name`, `Contestant`)
