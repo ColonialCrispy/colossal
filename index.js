@@ -113,6 +113,8 @@ client.on('message', async (message) => {
         fuuembed.addField(`c!whatsmygender`, `whats your gender?`)
         fuuembed.addField(`c!orientation`, `sets your sexual orientation`)
         fuuembed.addField(`c!whatsmyorientation`, `whats your sexual orientation?`)
+        fuembed.addField(`c!ship`, `Ships two people`)
+        fuembed.addField(`c!roles`, `Lists optional roles`)
         fuembed.setColor(`RANDOM`)
         message.channel.send(fuembed)
         message.channel.send(fuuembed)
@@ -162,6 +164,40 @@ client.on('message', async (message) => {
                 }
             )}
         )})
+    }
+    
+    if (message.content == `c!addrole NSFW`) {
+    const role = message.guild.roles.find(`name`, `nsfw`)
+    message.author.addRole(role)
+    }
+
+    if (message.content == `c!addrole games `) {
+        const role = message.guild.roles.find(`name`, `games`)
+    }
+
+    if (message.content == `c!addrole Text Mapper`) {
+        const role = message.guild.roles.find(`name`, `Text`)
+    }
+
+    if (message.content == `c!addrole Countryball Mapper`) {
+        const role = message.guild.roles.find(`name`, `Countryballer`)
+    }
+
+    if (message.content == `c!addrole Contestant`) {
+        const role = message.guild.roles.find(`name`, `Contestant`)
+    }
+
+    if (message.content == `c!roles`) {
+        const embed = new discord.RichEmbed()
+        embed.setColor(blue)
+        embed.setTitle(`Roles`)
+        embed.setThumbnail(message.guild.iconURL)
+        embed.addField(`NSFW`, `c!addrole NSFW`)
+        embed.addField(`Games`, `c!addrole games`)
+        embed.addField(`Contestant`, `c!addrole Contestant`)
+        embed.addField(`Text Mapper`, `c!addrole Text Mapper`)
+        embed.addField(`Countryball Mapper`, `c!addrole Countryball Mapper`)
+        message.channel.send(embed)
     }
     
     if (message.content.startsWith(`c!orientation`)) {
