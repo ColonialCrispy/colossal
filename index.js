@@ -808,6 +808,7 @@ client.on('message', async (message) => {
         embed.addField(`Region`, message.guild.region, true)
         embed.addField(`Owner`, message.guild.owner.tag, true)
         embed.addField(`ID`, message.guild.id, true)
+        embed.addField(`Created At`, message.guild.createdAt)
         embed.setColor(`003fff`)
         embed.setThumbnail(message.guild.iconURL)
         message.channel.sendEmbed(embed)
