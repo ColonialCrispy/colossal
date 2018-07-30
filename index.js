@@ -747,22 +747,8 @@ client.on('message', async (message) => {
     if (message.content == `c!buy`) {
         message.channel.send(`Please use c!shop to see what you can buy!`)
     }
-
-    if (message.content == `c!rainbowrole`) {
-        message.guild.createRole({
-            name: `Rainbow`,
-            color: `#FFFFFF`
-        })
-    }
-
-    if (message.content == `c!rainbowon`) {
-        let role = message.guild.roles.find(`name`, `Rainbow`)
-        function intervalFunc1() {
-            role.edit({ color: `RANDOM`})
-        }
-        setInterval(intervalFunc1, 500)
-    }    
-
+    
+    
     if (message.content == `c!buy 1`) {
         const role = message.guild.roles.find(`name`, `Red`);
         if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
