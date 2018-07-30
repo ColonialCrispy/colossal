@@ -34,6 +34,55 @@ client.on ("ready", () => {
     
 });
 
+client.on(`guildCreate`, async guild => {
+    guild.createEmoji(`https://media.discordapp.net/attachments/380859361771257856/472870341606113290/885704_cloud_512x512.png`, `rainboww`) 
+    guild.createEmoji(`https://cdn.discordapp.com/attachments/450411012978507776/472897238025371648/unknown.png`, `gradiant`)
+    guild.createEmoji(`./Colors/Red.png`, `Red`)
+    guild.createEmoji(`./Colors/Blue.png`, `Blue`)
+    guild.createEmoji(`./Colors/Yellow.png`, `Yellow`)
+    guild.createEmoji(`./Colors/Green.png`, `Green`)
+    guild.createEmoji(`./Colors/Orange.png`, `Orange`)
+    guild.createEmoji(`./Colors/Purple.png`, `Purple`)
+    guild.createEmoji(`./Colors/White.png`, `White`)
+    guild.createEmoji(`./Colors/Pink.png`, `Pink`)
+    message.guild.createRole({
+        name: `Red`,
+        color: `#ff0000`
+    })
+    message.guild.createRole({
+        name: `Blue`,
+        color: `#0020ff`
+    })
+    message.guild.createRole({
+        name: `Yellow`,
+        color: `#ffe000`
+    })
+    message.guild.createRole({
+        name: `Green`,
+        color: `#00ff13`
+    })
+    message.guild.createRole({
+        name: `Orange`,
+        color: `#ff4c00`
+    })
+    message.guild.createRole({
+        name: `Purple`,
+        color: `#7000b9`
+    })
+    message.guild.createRole({
+        name: `White`,
+        color: `#ffffff`
+    })
+    message.guild.createRole({
+        name: `Pink`,
+        color: `#e600ff`
+    })
+    message.guild.createRole({
+        name: `Rainbow`,
+        color: `#ffffff`
+    })
+}) 
+
 const prefix = "colonial pls ";
 
 client.on('message', async (message) => {
@@ -666,6 +715,278 @@ client.on('message', async (message) => {
         message.channel.send(embed)
 
     }
+
+    if (message.content.startsWith(`c!shop`)) {
+        let remoji = message.guild.emojis.find(`name`, `rainboww`)
+        let rremoji =  message.guild.emojis.find(`name`, `gradiant`)
+        let Red = message.guild.emojis.find(`name`, `Red`)
+        let Blue = message.guild.emojis.find(`name`, `Blue`)
+        let Yellow = message.guild.emojis.find(`name`, `Yellow`)
+        let Green = message.guild.emojis.find(`name`, `Green`)
+        let Orange = message.guild.emojis.find(`name`, `Orange`)
+        let Purple = message.guild.emojis.find(`name`, `Purple`)
+        let White = message.guild.emojis.find(`name`, `White`)
+        let Pink = message.guild.emojis.find(`name`, `Pink`)
+        const shop = new discord.RichEmbed()
+        shop.setTitle(`Colossal Shop`)
+        shop.setThumbnail(client.avatarURL)
+        shop.setFooter(`Colossal Shop, 2018 ${message.guild.iconURL}`)
+        shop.addField(`Red Role ${Red}`, `1000 Coins | 1`) 
+        shop.addField(`Blue Role ${Blue}`, `1000 Coins | 2`)
+        shop.addField(`Yellow Role ${Yellow}`, `1000 Coins | 3`)
+        shop.addField(`Green Role ${Green}`, `1000 Coins | 4`)
+        shop.addField(`Orange Role ${Orange}`, `1000 Coins | 5`)
+        shop.addField(`Purple Role ${Purple}`, `1000 Coins | 6`)
+        shop.addField(`White Role ${White}`, `1000 Coins | 7`)
+        shop.addField(`Pink Role ${Pink}`, `1000 Coins | 8`)
+        shop.addField(`Rainbow Role ${remoji}`, `10,000 Coins | 9`)
+        message.channel.send(shop)
+        message.channel.send(`${message.author} To buy an item do c!buy [item number]`)
+    }
+
+    if (message.content == `c!buy`) {
+        message.channel.send(`Please use c!shop to see what you can buy!`)
+    }
+
+    if (message.content == `c!rainbowrole`) {
+        message.guild.createRole({
+            name: `Rainbow`,
+            color: `#FFFFFF`
+        })
+    }
+
+    if (message.content == `c!rainbowon`) {
+        let role = message.guild.roles.find(`name`, `Rainbow`)
+        function intervalFunc1() {
+            role.edit({ color: `RANDOM`})
+        }
+        setInterval(intervalFunc1, 500)
+    }    
+
+    if (message.content == `c!buy 1`) {
+        const role = message.guild.roles.find(`name`, `Red`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the red role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Red!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Red role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 9`) {
+        const role = message.guild.roles.find(`name`, `Rainbow`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Rainbow role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Rainbow!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Red role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 2`) {
+        const role = message.guild.roles.find(`name`, `Blue`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Blue role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Blue!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Blue role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 3`) {
+        const role = message.guild.roles.find(`name`, `Yellow`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Yellow role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Yellow!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Yellow role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 4`) {
+        const role = message.guild.roles.find(`name`, `Green`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Green role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Green!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Green role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 5`) {
+        const role = message.guild.roles.find(`name`, `Orange`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Orange role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Orange!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Orange role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 6`) {
+        const role = message.guild.roles.find(`name`, `Purple`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Purple role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Purple!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Purple role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+    
+    if (message.content == `c!buy 7`) {
+        const role = message.guild.roles.find(`name`, `White`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the White role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role White!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the White role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    }
+
+    if (message.content == `c!buy 8`) {
+        const role = message.guild.roles.find(`name`, `Pink`);
+        if(message.member.roles.has(role.id)) return message.channel.send(`You already have this role!`)
+        message.channel.send(`Are you sure you want to buy the Pink role? (Yes or No)`)
+        const filter = m => m.author.equals(message.author);
+        message.channel.awaitMessages(filter, { max: 1, time: 60000, errors: ['time'] })
+        .then(collected => {
+            if (collected.first().content == `Yes`) {
+                money.fetchBal(message.author.id).then((i) => { 
+                    if(i.money < 1000) return message.channel.send(`You do not have enough to afford this!`)
+                    if(i.money > 999) {
+                        message.channel.send(`You now have the role Pink!`)
+                        message.member.addRole(role)
+                        money.updateBal(message.author.id, -1000).then((i) => {
+                            message.channel.send(`${message.author} has bought the Pink role for 1000 coins!`)
+                        })
+                    }   
+                })
+            }   
+            if (collected.first().content == `No`) {
+                return;
+            }
+        })
+    } 
 
     if (message.content.startsWith (`c!weather`)) {
 
