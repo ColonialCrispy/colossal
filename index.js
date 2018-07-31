@@ -156,6 +156,7 @@ client.on('message', async (message) => {
         fuuembed.addField(`c!myfuture`, `Your Future o.o`)
         fuuembed.addField(`c!avatar`, `Gives the avatar of a mentioned user or yourself`)
         fuuembed.addField(`c!dice`, `Rolls a dice`)
+        fuuembed.addField(`c!achievement`, `Minecraft Achievement`)
         fuuembed.addField(`c!serverinfo`, `Server Info`)
         fuuembed.addField(`c!trumpquote`, `A quote by the 45th president`)
         fuuembed.addField(`c!userinfo`, `User info`)
@@ -164,15 +165,14 @@ client.on('message', async (message) => {
         fuuembed.addField(`c!orientation`, `sets your sexual orientation`)
         fuuembed.addField(`c!whatsmyorientation`, `whats your sexual orientation?`)
         fuuuembed.addField(`c!ship`, `Ships two people`)
-        fuuuembed.addField(`c!roles`, `Lists optional roles`)
+        fuuuembed.addField(`c!shop`, `Role Color Shop`)
+        fuuuembed.addField(`c!hitname`, `c!hitname info to learn how to play! Mention two users!`)
         fuembed.setColor(`BLUE`)
         fuuembed.setColor(`BLUE`)
         fuuuembed.setColor(`BLUE`)
         message.channel.send(fuembed)
         message.channel.send(fuuembed)
         message.channel.send(fuuuembed)
-
-
     }
     
     if (message.content.startsWith(`c!hitname info`)) {
